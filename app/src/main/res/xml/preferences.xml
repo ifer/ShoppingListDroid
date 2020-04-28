@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory
+        android:title="@string/pref_categ_server"
+        android:key="pref_categ_server_key">
+
+        <EditTextPreference android:title="@string/pref_server"
+            android:key="pref_server_key"
+            android:defaultValue="http://10.0.2.2:8090"
+           />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/pref_categ_user"
+        android:key="pref_categ_server_key"
+        >
+
+        <EditTextPreference android:title="@string/pref_username"
+            android:key="pref_username_key"
+            />
+
+        <EditTextPreference android:title="@string/pref_password"
+            android:key="pref_password_key"
+            android:inputType="textPassword"
+            />
+
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

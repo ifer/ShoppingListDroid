@@ -1,0 +1,75 @@
+<resources>
+    <string name="app_name">Λίστα αγορών</string>
+
+    <!-- ORIGINAL: to be removed -->
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="menu_home">Home</string>
+    <string name="menu_gallery">Gallery</string>
+    <string name="menu_slideshow">Slideshow</string>
+    <string name="home_second">Home Second</string>
+    <!-- END ORIGINAL -->
+
+
+    <string name="action_settings">Ρυθμίσεις</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+
+
+    <string name="app_signature">Copywrite ifer 2020</string>
+    <string name="app_about">Copywrite ifer 2020</string>
+    <string name="text_about">\nΛίστα αγορών\n\n
+έκδοση @version@\n\n
+Copyright ifer 2020\n
+</string>
+    <string name="version_uknown">[Άγνωστη]</string>
+
+    <string name="action_about">Περί..</string>
+    <string name="action_clear">Καθάρισμα</string>
+    <string name="action_add_product">Προσθήκη προϊόντος</string>
+    <string name="action_edit">Επεξεργασία</string>
+    <string name="action_add_visit">Προσθήκη επίσκεψης</string>
+    <string name="action_save">Αποθήκευση</string>
+    <string name="action_cancel">Άκυρο</string>
+    <string name="action_delete">Διαγραφή</string>
+    <string name="action_check_connection">Έλεγχος σύνδεσης</string>
+
+
+    <string name="popup_ok">ΟΚ</string>
+    <string name="popup_cancel">Άκυρο</string>
+    <string name="popup_accept">Αποδοχή</string>
+    <string name="popup_decline">Άρνηση</string>
+    <string name="popup_yes">Ναι</string>
+    <string name="popup_no">Όχι</string>
+    <string name="popup_title_warning">ΠΡΟΣΟΧΗ!</string>
+    <string name="popup_title_info">Ειδοποίηση</string>
+    <string name="popup_title_question">Ερώτηση</string>
+    <string name="popup_title_error">ΣΦΑΛΜΑ</string>
+
+    <string name="error_search">Πρόβλημα στην αναζήτηση ή στην επικοινωνία με τον server </string>
+    <string name="error_save">Πρόβλημα στην αποθήκευση ή στην επικοινωνία με τον server </string>
+    <string name="error_delete">Πρόβλημα στην διαγραφή ή στην επικοινωνία με τον server </string>
+    <string name="error_empty_setting">Όλα τα πεδία πρέπει να συμπληρωθούν!</string>
+    <string name="warn_not_saved">Η εγγραφή έχει μεταβληθεί. Σίγουρα θέλετε να ακυρώσετε τις αλλαγές;</string>
+    <string name="warn_delete_patient">Το προϊόν θα διαγραφεί . Σίγουρα θέλετε να συνεχίσετε;</string>
+    <string name="warn_credentials_needed">Δεν έχουν οριστεί στοιχεία σύνδεσης.\nΠαρακαλώ συμπληρώστε τα στην οθόνη \'Ρυθμίσεις\'\n</string>
+    <string name="wrong_credentials">Η σύνδεση ήταν ανεπιτυχής.\nΠαρακαλώ ελέγξτε τα στοιχεία σύνδεσης στην οθόνη \'Ρυθμίσεις\'\n</string>
+    <string name="connection_error">Η σύνδεση ήταν ανεπιτυχής. Αιτία:\n</string>
+    <string name="connection_ok">Επιτυχής σύνδεση! Μπορείτε να αρχίσετε να χρησιμοποιείτε την εφαρμογή</string>
+
+    <string name="pref_categ_server">Σύνδεση</string>
+    <string name="pref_categ_user">Στοιχεία χρήστη</string>
+    <string name="pref_server">Server URL</string>
+    <string name="pref_username">Όνομα</string>
+    <string name="pref_password">Κωδικός</string>
+
+</resources>
