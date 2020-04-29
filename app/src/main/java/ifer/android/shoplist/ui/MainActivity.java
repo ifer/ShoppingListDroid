@@ -27,6 +27,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import ifer.android.shoplist.AppController;
@@ -105,9 +106,10 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
             public void onResponse(Call<List<ShopitemPrintForm>> call, Response<List<ShopitemPrintForm>> response) {
                 if (response.isSuccessful()) {
                     List<ShopitemPrintForm> shopitemList = (List<ShopitemPrintForm>) response.body();
+                    shopitemList = processShopitemPrintList(shopitemList);
 //                    Log.d(TAG, shopitemList.toString());
-                    ShopitemListAdapter adapter = new ShopitemListAdapter(MainActivity.this.context, shopitemList);
-
+                    ShopitemListAdapter adapter = new ShopitemListAdapter(shopitemList);
+                    shopitemsListView.setAdapter(adapter);
                 }
                 else {
                     String e = response.errorBody().source().toString();
@@ -197,6 +199,21 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         });
     }
 
+    // Inserts items that contain only the category name
+    private List<ShopitemPrintForm> processShopitemPrintList ( List<ShopitemPrintForm> shopitemList){
+        List<ShopitemPrintForm> resultList = new ArrayList<ShopitemPrintForm>();
+        String prevCategory = "";
+        for (ShopitemPrintForm spf : shopitemList){
+            if (!spf.getCategoryName().equals(prevCategory)){
+                ShopitemPrintForm catspf = new ShopitemPrintForm();
+                catspf.setCategoryName(spf.getCategoryName());
+                resultList.add(catspf);
+                prevCategory = spf.getCategoryName();
+            }
+            resultList.add(spf);
+        }
+        return resultList;
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

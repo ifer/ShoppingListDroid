@@ -3,14 +3,11 @@ package ifer.android.shoplist;
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
+import android.util.Log;
 
 
 import ifer.android.shoplist.api.ApiInterface;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-
+import ifer.android.shoplist.ui.MainActivity;
 
 
 /**
@@ -21,7 +18,7 @@ public class AppController extends Application {
     public static final String TAG = "DEBUG-shoplist";
     private static AppController _this;
     private static SharedPreferences settings;
-    private static Context context;
+    private static Context appContext;
 
     public static final String SETTINGS_NAME = "SHOPLIST_SETTINGS";
 
@@ -60,11 +57,15 @@ public class AppController extends Application {
         return _this;
     }
 
+    public static Context getAppContext() {
+        return appContext;
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();
         _this = this;
-        AppController.context = getApplicationContext();
+        appContext = getApplicationContext();
         settings = getSharedPreferences(SETTINGS_NAME, 0);
 
 //        if (isDevelop)
@@ -77,7 +78,6 @@ public class AppController extends Application {
 
 
     }
-
 
     public static String getApiDomain() {
         if (isDevelop)
