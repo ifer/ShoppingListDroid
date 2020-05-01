@@ -22,6 +22,9 @@ public interface ApiInterface {
     @GET("/api/userexists")
     Call<ResponseMessage> existsUser(@Query("name") String username);
 
+    @GET("/api/shopitemlist")
+    Call<List<ShopitemPrintForm>> getShopitemList();
+
 
 //    @POST("/saveimage")
 //    Call<String> saveImage(@Body Drawing img );
