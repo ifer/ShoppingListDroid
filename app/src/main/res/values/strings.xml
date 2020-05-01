@@ -71,5 +71,6 @@ Copyright ifer 2020\n
     <string name="pref_server">Server URL</string>
     <string name="pref_username">Όνομα</string>
     <string name="pref_password">Κωδικός</string>
+    <string name="title_activity_shoplist">ShoplistActivity</string>
 
 </resources>

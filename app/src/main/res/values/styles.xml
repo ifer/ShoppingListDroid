@@ -25,8 +25,7 @@
     <style name="AppTheme.NoActionBar.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
 
-    <style name="MyMaterialTheme" parent="MyMaterialTheme.Base">
-    </style>
+    <style name="MyMaterialTheme" parent="MyMaterialTheme.Base"></style>
 
     <style name="MyMaterialTheme.Base" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="windowNoTitle">true</item>
