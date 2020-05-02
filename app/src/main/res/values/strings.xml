@@ -74,4 +74,6 @@ Copyright ifer 2020\n
     <string name="pref_password">Κωδικός</string>
     <string name="title_activity_shoplist">ShoplistActivity</string>
 
+    <string name="number_zero">0</string>
+
 </resources>

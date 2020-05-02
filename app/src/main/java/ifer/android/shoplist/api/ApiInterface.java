@@ -3,6 +3,7 @@ package ifer.android.shoplist.api;
 import java.util.List;
 
 import ifer.android.shoplist.model.Shopitem;
+import ifer.android.shoplist.model.ShopitemEditForm;
 import ifer.android.shoplist.model.ShopitemPrintForm;
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -25,6 +26,8 @@ public interface ApiInterface {
     @GET("/api/shopitemlist")
     Call<List<ShopitemPrintForm>> getShopitemList();
 
+    @GET("/api/shopitemeditlist")
+    Call<List<ShopitemEditForm>> getShopitemEditList();
 
 //    @POST("/saveimage")
 //    Call<String> saveImage(@Body Drawing img );

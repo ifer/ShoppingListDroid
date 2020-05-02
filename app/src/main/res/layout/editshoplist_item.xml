@@ -36,16 +36,17 @@
             android:layout_below="@+id/tv_productname" />
 
 
-        <TextView
-            android:id="@+id/tv_quantity"
-            android:layout_width="100dp"
+        <EditText
+            android:id="@+id/et_quantity"
+            android:layout_width="80dp"
             android:layout_height="wrap_content"
             android:layout_below="@id/tv_productname"
-            android:layout_toLeftOf="@+id/btnOK"
             android:layout_marginTop="8dp"
+            android:layout_marginEnd="3dp"
             android:layout_marginRight="3dp"
             android:layout_toStartOf="@+id/btnOK"
-            android:layout_marginEnd="3dp"
+            android:layout_toLeftOf="@+id/btnOK"
+            android:background="@drawable/tv_border"
             />
 
         <ImageButton
