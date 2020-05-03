@@ -51,7 +51,6 @@ public class ShopitemListAdapter extends BaseAdapter {
     public View getView(int position, View view, ViewGroup parent) {
 
         final ViewHolder holder;
-
         if (view == null) {
             holder = new ViewHolder();
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);

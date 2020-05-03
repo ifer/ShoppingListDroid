@@ -16,7 +16,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="67dp"
+        android:layout_height="wrap_content"
         android:background="@color/FloralWhite"
         android:padding="8dp">
 
@@ -27,7 +27,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:text=""
-            android:textSize="16sp" />
+            android:textSize="18sp" />
 
         <CheckBox
             android:id="@+id/chk_selected"
@@ -35,31 +35,35 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/tv_productname" />
 
+        <TextView
+            android:id="@+id/labelquantity"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_productname"
+            android:layout_alignTop="@id/chk_selected"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_toStartOf="@+id/et_quantity"
+            android:layout_toLeftOf="@+id/et_quantity"
+            android:text="@string/label_quantity" />
 
         <EditText
             android:id="@+id/et_quantity"
             android:layout_width="80dp"
             android:layout_height="wrap_content"
             android:layout_below="@id/tv_productname"
+            android:layout_alignTop="@id/chk_selected"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerHorizontal="true"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="3dp"
             android:layout_marginRight="3dp"
-            android:layout_toStartOf="@+id/btnOK"
-            android:layout_toLeftOf="@+id/btnOK"
+            android:autofillHints="@string/label_quantity"
             android:background="@drawable/tv_border"
-            />
-
-        <ImageButton
-            android:id="@+id/btnOK"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/tv_productname"
-            android:layout_alignParentRight="true"
-            card_view:srcCompat="@drawable/ic_done_black_12dp"
-            android:contentDescription="@string/action_quantity_ok"
-            android:layout_marginRight="3dp"
-            android:layout_alignParentEnd="true"
-            android:layout_marginEnd="3dp" />
+            android:gravity="center_horizontal"
+            android:singleLine="true" />
 
 
 </RelativeLayout>

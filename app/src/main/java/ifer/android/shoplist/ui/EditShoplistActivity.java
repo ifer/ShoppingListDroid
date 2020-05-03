@@ -1,6 +1,5 @@
 package ifer.android.shoplist.ui;
 
-import android.Manifest;
 import android.content.Context;
 import android.os.Bundle;
 
@@ -13,16 +12,19 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
-import android.widget.ListView;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import ifer.android.shoplist.AppController;
 import ifer.android.shoplist.R;
+import ifer.android.shoplist.api.ResponseMessage;
+import ifer.android.shoplist.model.Shopitem;
 import ifer.android.shoplist.model.ShopitemEditForm;
-import ifer.android.shoplist.model.ShopitemPrintForm;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -32,7 +34,7 @@ import static ifer.android.shoplist.util.AndroidUtils.showToastMessage;
 public class EditShoplistActivity extends AppCompatActivity {
     private RecyclerView editShoplistView;
     private Context context;
-    private List<ShopitemEditForm> shopitemList;
+    private static List<ShopitemEditForm> shopitemEditList;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,15 +69,15 @@ public class EditShoplistActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<List<ShopitemEditForm>> call, Response<List<ShopitemEditForm>> response) {
                 if (response.isSuccessful()) {
-                    shopitemList = (List<ShopitemEditForm>) response.body();
-                    Collections.sort(shopitemList);
-                    for (ShopitemEditForm sef : shopitemList){
+                    shopitemEditList = (List<ShopitemEditForm>) response.body();
+                    Collections.sort(shopitemEditList);
+                    for (ShopitemEditForm sef : shopitemEditList){
                         if (sef.getQuantity() == null){
                             sef.setQuantity("0");
                         }
                     }
-                    Log.d(MainActivity.TAG, shopitemList.toString());
-                    EditShoplistAdapter adapter = new EditShoplistAdapter(shopitemList);
+//                    Log.d(MainActivity.TAG, shopitemEditList.toString());
+                    EditShoplistAdapter adapter = new EditShoplistAdapter(shopitemEditList);
                     editShoplistView.setAdapter(adapter);
                 }
                 else {
@@ -92,4 +94,90 @@ public class EditShoplistActivity extends AppCompatActivity {
         });
 
     }
+
+    public static void printSelected(){
+        Log.d(MainActivity.TAG, "SELECTED:");
+        for (ShopitemEditForm sef : shopitemEditList){
+            if (sef.isSelected()){
+                Log.d(MainActivity.TAG, sef.getProductName() + " " + sef.getQuantity());
+            }
+        }
+
+    }
+
+    public static void saveShopitemEditList (){
+        List<Shopitem> shopitemList = new ArrayList<Shopitem>();
+        for (ShopitemEditForm sef : shopitemEditList){
+            if (sef.isSelected()){
+                Shopitem si = new Shopitem(null, sef.getProdid(), sef.getQuantity(), null);
+                shopitemList.add(si);
+            }
+        }
+
+
+//        ApiInterface apiService = ApiClient.createNoAuthService(ApiInterface.class);
+        Call<ResponseMessage> call = AppController.apiService.saveShopitemEditList(shopitemList);
+        final Context context = AppController.getAppContext();
+
+        call.enqueue(new Callback<ResponseMessage>() {
+            @Override
+            public void onResponse(Call<ResponseMessage> call, Response<ResponseMessage> response) {
+                if (response.isSuccessful()) {
+                    ResponseMessage msg = response.body();
+                    if (msg.getStatus() == 0) {
+
+                    }
+                    else {
+                        String e = response.errorBody().source().toString();
+                        showToastMessage(context, context.getResources().getString(R.string.error_save) + "\n" + e);
+                    }
+                }
+                else {
+                    String e = response.errorBody().source().toString();
+                    showToastMessage(context, context.getResources().getString(R.string.error_save) + "\n" + e);
+                }
+            }
+            @Override
+            public void onFailure(Call<ResponseMessage> call, Throwable t) {
+                showToastMessage(context, context.getResources().getString(R.string.error_save) + "\n" + t.toString());
+                Log.d(MainActivity.TAG, t.toString());
+            }
+        });
+    }
+
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.edit_shoplist, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+        switch (item.getItemId()) {
+            case R.id.action_shopitems_save:
+                saveShopitemEditList();
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+
+    public static void changeShopitemStatus (int index, boolean selected, String quantity){
+        shopitemEditList.get(index).setSelected(selected);
+        shopitemEditList.get(index).setQuantity(quantity);
+//        Log.d(MainActivity.TAG, "changeShopitemStatus: product=" +  shopitemList.get(index).getProductName() + " index=" + index + " selected=" + selected + " quantity=" + quantity);
+    }
+
+    public static void changeShopitemQuantity (int index,String quantity){
+         shopitemEditList.get(index).setQuantity(quantity);
+//        Log.d(MainActivity.TAG, "changeShopitemStatus: product=" +  shopitemList.get(index).getProductName() + " index=" + index + " selected=" + selected + " quantity=" + quantity);
+    }
+
+
 }

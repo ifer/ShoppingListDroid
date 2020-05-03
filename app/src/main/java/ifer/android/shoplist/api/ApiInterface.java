@@ -29,6 +29,10 @@ public interface ApiInterface {
     @GET("/api/shopitemeditlist")
     Call<List<ShopitemEditForm>> getShopitemEditList();
 
+    @POST("/api/replaceshopitemlist")
+    Call<ResponseMessage> saveShopitemEditList (@Body List<Shopitem> list);
+
+
 //    @POST("/saveimage")
 //    Call<String> saveImage(@Body Drawing img );
 
