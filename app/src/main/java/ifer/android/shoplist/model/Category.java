@@ -14,6 +14,11 @@ public class Category {
         this.catid = catid;
         this.descr = descr;
     }
+    
+    @Override
+    public String toString(){
+        return this.descr;
+    }
 
     public Integer getCatid() {
         return catid;

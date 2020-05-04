@@ -18,6 +18,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -27,6 +29,7 @@ import java.util.List;
 import ifer.android.shoplist.AppController;
 import ifer.android.shoplist.R;
 import ifer.android.shoplist.api.ResponseMessage;
+import ifer.android.shoplist.model.Category;
 import ifer.android.shoplist.model.Shopitem;
 import ifer.android.shoplist.model.ShopitemEditForm;
 import retrofit2.Call;
@@ -39,9 +42,11 @@ import static ifer.android.shoplist.util.GenericUtils.*;
 
 public class EditShoplistActivity extends AppCompatActivity {
     private static RecyclerView editShoplistView;
+    private Spinner spSelectCategory;
     private Context context;
     private static List<ShopitemEditForm> shopitemEditList;
     private static List<ShopitemEditForm> prevShopitemEditList;
+    private List<Category> categoryList;
     private static Menu optionsMenu;
 //    private static boolean selectionsChanged=false;
 
@@ -52,11 +57,14 @@ public class EditShoplistActivity extends AppCompatActivity {
         this.context = AppController.getAppContext();
         setContentView(R.layout.activity_editshoplist);
         Toolbar toolbar = findViewById(R.id.toolbar);
+
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
+        spSelectCategory = (Spinner)findViewById(R.id.selectcategory);
         editShoplistView = (RecyclerView) findViewById(R.id.editShopListView);
+
         LinearLayoutManager llm = new LinearLayoutManager(this);
         editShoplistView.setLayoutManager(llm);
         editShoplistView.setHasFixedSize(true);
@@ -69,7 +77,7 @@ public class EditShoplistActivity extends AppCompatActivity {
 //                        .setAction("Action", null).show();
 //            }
 //        });
-
+        findCategoryList(context);
         findShopitemEditList(context);
     }
 
@@ -109,6 +117,33 @@ public class EditShoplistActivity extends AppCompatActivity {
 
     }
 
+    private void findCategoryList (final Context context){
+        Call<List<Category>> call = AppController.apiService.getCategoryList();
+
+        call.enqueue(new Callback<List<Category>>() {
+            @Override
+            public void onResponse(Call<List<Category>> call, Response<List<Category>> response) {
+                if (response.isSuccessful()) {
+                    categoryList = (List<Category>) response.body();
+//                    Log.d(MainActivity.TAG, "categories=" + categoryList);
+                    spSelectCategory.setAdapter(new ArrayAdapter<Category>(context, android.R.layout.simple_list_item_1, categoryList));
+//                    EditShoplistAdapter adapter = new EditShoplistAdapter(shopitemEditList);
+//                    editShoplistView.setAdapter(adapter);
+                }
+                else {
+                    String e = response.errorBody().source().toString();
+                    showToastMessage(context, context.getResources().getString(R.string.wrong_credentials) + "\n" + e);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Category>> call, Throwable t) {
+                showToastMessage(context, context.getResources().getString(R.string.wrong_credentials));
+                Log.d(MainActivity.TAG, "Connection failed. Reason: " + t.getMessage());
+            }
+        });
+
+    }
 
     public static void printSelected(){
         Log.d(MainActivity.TAG, "SELECTED:");

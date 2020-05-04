@@ -2,6 +2,7 @@ package ifer.android.shoplist.api;
 
 import java.util.List;
 
+import ifer.android.shoplist.model.Category;
 import ifer.android.shoplist.model.Shopitem;
 import ifer.android.shoplist.model.ShopitemEditForm;
 import ifer.android.shoplist.model.ShopitemPrintForm;
@@ -32,6 +33,8 @@ public interface ApiInterface {
     @POST("/api/replaceshopitemlist")
     Call<ResponseMessage> saveShopitemEditList (@Body List<Shopitem> list);
 
+    @GET("/api/categorylist")
+    Call<List<Category>> getCategoryList();
 
 //    @POST("/saveimage")
 //    Call<String> saveImage(@Body Drawing img );
