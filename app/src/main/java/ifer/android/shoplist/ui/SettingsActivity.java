@@ -43,9 +43,9 @@ public class SettingsActivity extends AppCompatActivity {
         prefUsername = (EditText) findViewById(R.id.pref_username);
         prefPassword = (EditText) findViewById(R.id.pref_password);
 
-//        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-//        setSupportActionBar(toolbar);
-//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         loadSettings();
     }

@@ -28,7 +28,10 @@
             android:label="@string/title_activity_shoplist"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
-        <activity android:name=".ui.SettingsActivity" />
+        <activity android:name=".ui.SettingsActivity"
+            android:label="@string/title_activity_settings"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
     </application>
 
 </manifest>

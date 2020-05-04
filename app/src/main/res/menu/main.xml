@@ -8,8 +8,8 @@
 <!--        app:showAsAction="never" />-->
     <item
         android:id="@+id/action_edit"
-        android:icon="@drawable/edit24"
+        android:icon="@drawable/cart24"
         app:showAsAction="always"
-        android:title="@string/action_edit">
+        android:title="@string/title_activity_shoplist">
     </item>
 </menu>

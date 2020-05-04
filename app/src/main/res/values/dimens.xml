@@ -22,5 +22,7 @@
 
     <dimen name="button_width">110dp</dimen>
 
+    <dimen name="badge_count_textsize">14sp</dimen>
+
 
 </resources>

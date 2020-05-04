@@ -1,6 +1,8 @@
 package ifer.android.shoplist.ui;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -35,6 +37,8 @@ public class EditShoplistActivity extends AppCompatActivity {
     private RecyclerView editShoplistView;
     private Context context;
     private static List<ShopitemEditForm> shopitemEditList;
+    private static Menu optionsMenu;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,21 +47,22 @@ public class EditShoplistActivity extends AppCompatActivity {
         setContentView(R.layout.activity_editshoplist);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         editShoplistView = (RecyclerView) findViewById(R.id.editShopListView);
         LinearLayoutManager llm = new LinearLayoutManager(this);
         editShoplistView.setLayoutManager(llm);
         editShoplistView.setHasFixedSize(true);
 
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+//        FloatingActionButton fab = findViewById(R.id.fab);
+//        fab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+//                        .setAction("Action", null).show();
+//            }
+//        });
 
         findShopitemEditList(context);
     }
@@ -77,6 +82,7 @@ public class EditShoplistActivity extends AppCompatActivity {
                         }
                     }
 //                    Log.d(MainActivity.TAG, shopitemEditList.toString());
+
                     EditShoplistAdapter adapter = new EditShoplistAdapter(shopitemEditList);
                     editShoplistView.setAdapter(adapter);
                 }
@@ -94,6 +100,7 @@ public class EditShoplistActivity extends AppCompatActivity {
         });
 
     }
+
 
     public static void printSelected(){
         Log.d(MainActivity.TAG, "SELECTED:");
@@ -144,6 +151,12 @@ public class EditShoplistActivity extends AppCompatActivity {
             }
         });
     }
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        this.optionsMenu = menu;
+        setCount(getSelectedCount()) ;
+        return true;
+    }
 
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -161,16 +174,43 @@ public class EditShoplistActivity extends AppCompatActivity {
             case R.id.action_shopitems_save:
                 saveShopitemEditList();
                 return true;
+            case android.R.id.home:    //make toolbar home button behave like cancel, when in edit mode
+                finish();
+                return (true);
 
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
 
+    //Make android back button behave like cancel, when in edit mode
+    @Override
+    public void onBackPressed() {
+//        super.onBackPressed();
+Log.d(MainActivity.TAG, "onBackPressed") ;
+        finish();
+
+    }
+
+
+    private static int getSelectedCount(){
+        if (shopitemEditList ==  null){
+            return 0;
+        }
+        int cnt = 0;
+        for (ShopitemEditForm sef : shopitemEditList){
+            if (sef.isSelected()){
+                cnt++;
+            }
+        }
+        return cnt;
+    }
+
 
     public static void changeShopitemStatus (int index, boolean selected, String quantity){
         shopitemEditList.get(index).setSelected(selected);
         shopitemEditList.get(index).setQuantity(quantity);
+        setCount(getSelectedCount()) ;
 //        Log.d(MainActivity.TAG, "changeShopitemStatus: product=" +  shopitemList.get(index).getProductName() + " index=" + index + " selected=" + selected + " quantity=" + quantity);
     }
 
@@ -179,5 +219,23 @@ public class EditShoplistActivity extends AppCompatActivity {
 //        Log.d(MainActivity.TAG, "changeShopitemStatus: product=" +  shopitemList.get(index).getProductName() + " index=" + index + " selected=" + selected + " quantity=" + quantity);
     }
 
+    public static void setCount( int cnt) {
+        String count = String.valueOf(cnt);
+        MenuItem menuItem = optionsMenu.findItem(R.id.ic_cart);
+        LayerDrawable icon = (LayerDrawable) menuItem.getIcon();
 
+        CountDrawable badge;
+
+        // Reuse drawable if possible
+        Drawable reuse = icon.findDrawableByLayerId(R.id.ic_cart_count);
+        if (reuse != null && reuse instanceof CountDrawable) {
+            badge = (CountDrawable) reuse;
+        } else {
+            badge = new CountDrawable(AppController.getAppContext());
+        }
+
+        badge.setCount(count);
+        icon.mutate();
+        icon.setDrawableByLayerId(R.id.ic_cart_count, badge);
+    }
 }

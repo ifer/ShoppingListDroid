@@ -46,6 +46,7 @@ Copyright ifer 2020\n
     <string name="action_quantity_ok">Ποσότητα OK</string>
 
     <string name="label_quantity">Ποσότητα:</string>
+    <string name="cart_title">Καλάθι</string>
 
 
     <string name="popup_ok">ΟΚ</string>
@@ -75,7 +76,9 @@ Copyright ifer 2020\n
     <string name="pref_server">Server URL</string>
     <string name="pref_username">Όνομα</string>
     <string name="pref_password">Κωδικός</string>
-    <string name="title_activity_shoplist">ShoplistActivity</string>
+
+    <string name="title_activity_shoplist">Καλάθι αγορών</string>
+    <string name="title_activity_settings">Ρυθμίσεις</string>
 
 
 </resources>
