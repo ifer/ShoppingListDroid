@@ -48,6 +48,8 @@ import static ifer.android.shoplist.util.GenericUtils.isEmptyOrNull;
 
 public class MainActivity extends AppCompatActivity  implements NavigationView.OnNavigationItemSelectedListener {
     public static String TAG = "shoplist";
+    private static final int REFRESH_REQUEST = 101;
+
 
     private AppBarConfiguration mAppBarConfiguration;
     private ListView shopitemsListView;
@@ -236,22 +238,24 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         switch (item.getItemId()) {
              case R.id.action_edit:
                 Intent intent = new Intent(MainActivity.this, EditShoplistActivity.class);
-                this.startActivity(intent);
+                startActivityForResult(intent, REFRESH_REQUEST);
+//                this.startActivity(intent);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
-
-
-
     }
-//    @Override
-//    public boolean onSupportNavigateUp() {
-//        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
-//        return NavigationUI.navigateUp(navController, mAppBarConfiguration)
-//                || super.onSupportNavigateUp();
-//    }
-//
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        boolean runInBackgroundChanged = false;
+        if (requestCode == REFRESH_REQUEST ) {
+            findShopitemPrintList(this);
+        }
+    }
+
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         // Handle navigation view item clicks here.

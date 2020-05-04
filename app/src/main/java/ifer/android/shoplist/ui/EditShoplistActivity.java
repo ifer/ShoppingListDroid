@@ -1,6 +1,7 @@
 package ifer.android.shoplist.ui;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
@@ -20,6 +21,7 @@ import android.view.View;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
 import ifer.android.shoplist.AppController;
@@ -31,13 +33,17 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static ifer.android.shoplist.util.AndroidUtils.showToastMessage;
+
+import static ifer.android.shoplist.util.AndroidUtils.*;
+import static ifer.android.shoplist.util.GenericUtils.*;
 
 public class EditShoplistActivity extends AppCompatActivity {
     private RecyclerView editShoplistView;
     private Context context;
     private static List<ShopitemEditForm> shopitemEditList;
+    private static List<ShopitemEditForm> prevShopitemEditList;
     private static Menu optionsMenu;
+//    private static boolean selectionsChanged=false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,7 +87,9 @@ public class EditShoplistActivity extends AppCompatActivity {
                             sef.setQuantity("0");
                         }
                     }
-//                    Log.d(MainActivity.TAG, shopitemEditList.toString());
+
+                    //make a copy to be able to find if it's changed
+                    prevShopitemEditList = cloneShopitemEditList(shopitemEditList, prevShopitemEditList);
 
                     EditShoplistAdapter adapter = new EditShoplistAdapter(shopitemEditList);
                     editShoplistView.setAdapter(adapter);
@@ -113,6 +121,10 @@ public class EditShoplistActivity extends AppCompatActivity {
     }
 
     public static void saveShopitemEditList (){
+
+        if (validateShoplist() == false)
+            return;
+
         List<Shopitem> shopitemList = new ArrayList<Shopitem>();
         for (ShopitemEditForm sef : shopitemEditList){
             if (sef.isSelected()){
@@ -122,7 +134,6 @@ public class EditShoplistActivity extends AppCompatActivity {
         }
 
 
-//        ApiInterface apiService = ApiClient.createNoAuthService(ApiInterface.class);
         Call<ResponseMessage> call = AppController.apiService.saveShopitemEditList(shopitemList);
         final Context context = AppController.getAppContext();
 
@@ -132,7 +143,7 @@ public class EditShoplistActivity extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     ResponseMessage msg = response.body();
                     if (msg.getStatus() == 0) {
-
+                        prevShopitemEditList = cloneShopitemEditList(shopitemEditList, prevShopitemEditList);
                     }
                     else {
                         String e = response.errorBody().source().toString();
@@ -175,7 +186,12 @@ public class EditShoplistActivity extends AppCompatActivity {
                 saveShopitemEditList();
                 return true;
             case android.R.id.home:    //make toolbar home button behave like cancel, when in edit mode
-                finish();
+                if (shopitemsChanged()){
+                    showPopup(this, Popup.WARNING, getString(R.string.warn_not_saved),  new ReturnPosAction(), new ReturnNegAction());
+                }
+                else {                                          //Data not changed
+                    finish();
+                }
                 return (true);
 
             default:
@@ -192,6 +208,20 @@ Log.d(MainActivity.TAG, "onBackPressed") ;
 
     }
 
+    class ReturnPosAction implements DialogInterface.OnClickListener {
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
+            shopitemEditList = cloneShopitemEditList(prevShopitemEditList, shopitemEditList);
+            finish();
+        }
+    }
+
+    class ReturnNegAction implements DialogInterface.OnClickListener {
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
+        }
+    }
+
 
     private static int getSelectedCount(){
         if (shopitemEditList ==  null){
@@ -206,17 +236,57 @@ Log.d(MainActivity.TAG, "onBackPressed") ;
         return cnt;
     }
 
+    private boolean shopitemsChanged (){
+        if (shopitemEditList.size() != prevShopitemEditList.size()){
+            return true;
+        }
+        for (int i=0; i<shopitemEditList.size(); i++){
+            if (! shopitemEditList.get(i).equals(prevShopitemEditList.get(i))){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private static List<ShopitemEditForm> cloneShopitemEditList (List<ShopitemEditForm> fromList, List<ShopitemEditForm> toList) {
+        toList = new ArrayList<ShopitemEditForm>();
+
+        Iterator<ShopitemEditForm> iterator = fromList.iterator();
+
+        while(iterator.hasNext())     {
+            try {
+                toList.add((ShopitemEditForm) iterator.next().clone());
+            } catch (CloneNotSupportedException e) {
+                e.printStackTrace();
+            }
+        }
+        return toList;
+    }
+
+    public static boolean validateShoplist (){
+        for (int i=0; i<shopitemEditList.size(); i++){
+
+            if (shopitemEditList.get(i).isSelected() &&
+                    (isEmptyOrNull(shopitemEditList.get(i).getQuantity()) || shopitemEditList.get(i).getQuantity().trim().equals("0"))){
+                String msg =  AppController.getAppContext().getResources().getString(R.string.error_qunantity_null).replace("%p", shopitemEditList.get(i).getProductName());
+                showToastMessage(AppController.getAppContext(), msg);
+                return false;
+            }
+        }
+        return true;
+    }
+
 
     public static void changeShopitemStatus (int index, boolean selected, String quantity){
         shopitemEditList.get(index).setSelected(selected);
         shopitemEditList.get(index).setQuantity(quantity);
         setCount(getSelectedCount()) ;
-//        Log.d(MainActivity.TAG, "changeShopitemStatus: product=" +  shopitemList.get(index).getProductName() + " index=" + index + " selected=" + selected + " quantity=" + quantity);
+//        Log.d(MainActivity.TAG, "changeShopitemStatus: product=" +  shopitemEditList.get(index).getProductName() + " index=" + index + " selected=" + selected + " quantity=" + quantity);
     }
 
     public static void changeShopitemQuantity (int index,String quantity){
          shopitemEditList.get(index).setQuantity(quantity);
-//        Log.d(MainActivity.TAG, "changeShopitemStatus: product=" +  shopitemList.get(index).getProductName() + " index=" + index + " selected=" + selected + " quantity=" + quantity);
+//        Log.d(MainActivity.TAG, "changeShopitemStatus: product=" +  shopitemEditList.get(index).getProductName() + " index=" + index +  " quantity=" + quantity);
     }
 
     public static void setCount( int cnt) {

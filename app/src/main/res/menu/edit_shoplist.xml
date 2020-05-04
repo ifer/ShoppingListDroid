@@ -7,6 +7,13 @@
         app:showAsAction="always" />
 
     <item
+        android:id="@+id/action_shopitems_clear"
+        android:icon="@drawable/cancel24"
+        app:showAsAction="always"
+        android:title="@string/action_clear">
+    </item>
+
+    <item
         android:id="@+id/action_shopitems_save"
         android:icon="@drawable/save24"
         app:showAsAction="always"

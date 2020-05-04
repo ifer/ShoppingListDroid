@@ -21,8 +21,11 @@ import ifer.android.shoplist.AppController;
 import ifer.android.shoplist.R;
 import ifer.android.shoplist.model.ShopitemEditForm;
 
+import static ifer.android.shoplist.util.GenericUtils.*;
+
 public class EditShoplistAdapter extends RecyclerView.Adapter<EditShoplistAdapter.ShopitemViewHolder> {
     private List<ShopitemEditForm> shopitemList;
+
     private Context context;
 
     public EditShoplistAdapter(List<ShopitemEditForm> shopitemList) {
@@ -38,7 +41,7 @@ public class EditShoplistAdapter extends RecyclerView.Adapter<EditShoplistAdapte
         // inflate a new card view
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.editshoplist_item, parent, false);
 
-        EditShoplistActivity.printSelected();
+//        EditShoplistActivity.printSelected();
 
         return new ShopitemViewHolder(view, new CustomEditTextListener(), new CustomOnClickListener());
     }
@@ -114,13 +117,21 @@ public class EditShoplistAdapter extends RecyclerView.Adapter<EditShoplistAdapte
 
         @Override
         public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+            String value = charSequence.toString();
+//
+//            if ( isEmptyOrNull(value) || value.trim().equals("0") ) {
+//                value = "1";
+//            }
+
+            shopitemList.get(position).setQuantity(value);
             EditShoplistActivity.changeShopitemQuantity(position,  charSequence.toString());
-            shopitemList.get(position).setQuantity(charSequence.toString());
+
 //EditShoplistActivity.printSelected();
         }
 
         @Override
         public void afterTextChanged(Editable editable) {
+
 
         }
     }

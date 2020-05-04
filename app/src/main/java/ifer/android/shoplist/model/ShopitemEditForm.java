@@ -1,6 +1,8 @@
 package ifer.android.shoplist.model;
 
-public class ShopitemEditForm implements Comparable<ShopitemEditForm> {
+import java.util.Objects;
+
+public class ShopitemEditForm implements Comparable<ShopitemEditForm>, Cloneable {
     private Integer prodid;
     private String productName;
     private Integer catid;
@@ -75,5 +77,24 @@ public class ShopitemEditForm implements Comparable<ShopitemEditForm> {
 
         return this.getProductName().compareTo(compareProduct);
 
+    }
+
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+
+        ShopitemEditForm that = (ShopitemEditForm) o;
+        return selected == that.selected &&
+                prodid.equals(that.prodid) &&
+                quantity.equals(that.quantity);
+    }
+
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
     }
 }
