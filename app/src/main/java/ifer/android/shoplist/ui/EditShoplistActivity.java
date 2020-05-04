@@ -38,7 +38,7 @@ import static ifer.android.shoplist.util.AndroidUtils.*;
 import static ifer.android.shoplist.util.GenericUtils.*;
 
 public class EditShoplistActivity extends AppCompatActivity {
-    private RecyclerView editShoplistView;
+    private static RecyclerView editShoplistView;
     private Context context;
     private static List<ShopitemEditForm> shopitemEditList;
     private static List<ShopitemEditForm> prevShopitemEditList;
@@ -186,26 +186,30 @@ public class EditShoplistActivity extends AppCompatActivity {
                 saveShopitemEditList();
                 return true;
             case android.R.id.home:    //make toolbar home button behave like cancel, when in edit mode
-                if (shopitemsChanged()){
-                    showPopup(this, Popup.WARNING, getString(R.string.warn_not_saved),  new ReturnPosAction(), new ReturnNegAction());
-                }
-                else {                                          //Data not changed
-                    finish();
-                }
+                returnToHome();
                 return (true);
-
+            case R.id.action_shopitems_clear:
+                removeAllSelections();
+                return (true);
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
 
-    //Make android back button behave like cancel, when in edit mode
+    private void returnToHome(){
+        if (shopitemsChanged()){
+            showPopup(this, Popup.WARNING, getString(R.string.warn_not_saved),  new ReturnPosAction(), new ReturnNegAction());
+        }
+        else {                                          //Data not changed
+            finish();
+        }
+
+    }
+
+    //Make android back button behave like app left arrow (android.R.id.home)
     @Override
     public void onBackPressed() {
-//        super.onBackPressed();
-Log.d(MainActivity.TAG, "onBackPressed") ;
-        finish();
-
+        returnToHome();
     }
 
     class ReturnPosAction implements DialogInterface.OnClickListener {
@@ -222,6 +226,17 @@ Log.d(MainActivity.TAG, "onBackPressed") ;
         }
     }
 
+    private static void removeAllSelections (){
+        for (int i=0; i<shopitemEditList.size(); i++){
+            shopitemEditList.get(i).setSelected((false));
+            shopitemEditList.get(i).setQuantity("0");
+        }
+        //make a copy to be able to find if it's changed
+//        prevShopitemEditList = cloneShopitemEditList(shopitemEditList, prevShopitemEditList);
+
+        EditShoplistAdapter adapter = new EditShoplistAdapter(shopitemEditList);
+        editShoplistView.setAdapter(adapter);
+    }
 
     private static int getSelectedCount(){
         if (shopitemEditList ==  null){
