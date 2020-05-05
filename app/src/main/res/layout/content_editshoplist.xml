@@ -17,34 +17,45 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:orientation="horizontal"
         android:layout_gravity="center_vertical"
-        >
+        android:layout_weight="2"
+        android:orientation="horizontal">
+
         <TextView
             android:layout_width="0dp"
-            android:layout_weight="2"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
             android:layout_marginLeft="10dp"
+            android:layout_weight="2"
             android:text="@string/label_category"
-            android:layout_gravity="center_vertical"
-            android:textSize="18sp"
-            />
-        <Spinner
-            android:id="@+id/selectcategory"
+            android:textSize="18sp" />
+
+        <RelativeLayout
             android:layout_width="0dp"
-            android:layout_weight="6"
             android:layout_height="wrap_content"
-            android:spinnerMode="dropdown"
             android:layout_gravity="center_vertical"
-            />
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="10dp"
+            android:layout_weight="6"
+            android:background="@drawable/spinner_style"
+            android:padding="8dp"
+            >
+
+            <Spinner
+                android:id="@+id/selectcategory"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:spinnerMode="dropdown"
+
+                />
+        </RelativeLayout>
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/editShopListView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="15"
+        android:layout_weight="20"
        />
 </LinearLayout>
 <!--</androidx.constraintlayout.widget.ConstraintLayout>-->
