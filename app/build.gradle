@@ -6,7 +6,7 @@ android {
 
     defaultConfig {
         applicationId "ifer.android.shoplist"
-        minSdkVersion 14
+        minSdkVersion 21
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"

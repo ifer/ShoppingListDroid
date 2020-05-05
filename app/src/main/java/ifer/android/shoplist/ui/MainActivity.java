@@ -3,29 +3,22 @@ package ifer.android.shoplist.ui;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.MenuItem;
-import android.view.View;
 import android.view.Menu;
-import android.view.ViewParent;
+import android.view.MenuItem;
 import android.widget.ListView;
-import android.widget.Toast;
-
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
-import com.google.android.material.navigation.NavigationView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.core.view.GravityCompat;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
-import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.navigation.ui.AppBarConfiguration;
+
+import com.google.android.material.navigation.NavigationView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,24 +28,25 @@ import ifer.android.shoplist.R;
 import ifer.android.shoplist.api.ApiClient;
 import ifer.android.shoplist.api.ApiInterface;
 import ifer.android.shoplist.api.ResponseMessage;
-import ifer.android.shoplist.model.Shopitem;
 import ifer.android.shoplist.model.ShopitemPrintForm;
+import ifer.android.shoplist.util.AndroidUtils;
 import ifer.android.shoplist.util.Constants;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-
-import static ifer.android.shoplist.util.AndroidUtils.*;
+import static ifer.android.shoplist.util.AndroidUtils.showToastMessage;
 import static ifer.android.shoplist.util.GenericUtils.isEmptyOrNull;
 
 public class MainActivity extends AppCompatActivity  implements NavigationView.OnNavigationItemSelectedListener {
     public static String TAG = "shoplist";
     private static final int REFRESH_REQUEST = 101;
+    private final String VERSION_PATTERN = "@version@";
+
 
 
     private AppBarConfiguration mAppBarConfiguration;
-    private ListView shopitemsListView;
+    private static ListView shopitemsListView;
     private Context context;
 
 
@@ -69,14 +63,6 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-//        FloatingActionButton fab = findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-//            }
-//        });
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -90,12 +76,12 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
 
         if (AppController.connectionEstablished == false)
             setupConnection(getApplicationContext());
-
-        findShopitemPrintList(this);
+        else
+            findShopitemPrintList(this);
     }
 
 
-    private void findShopitemPrintList (final Context context){
+    private static void findShopitemPrintList (final Context context){
         Call<List<ShopitemPrintForm>> call = AppController.apiService.getShopitemPrintList();
 
         call.enqueue(new Callback<List<ShopitemPrintForm>>() {
@@ -179,8 +165,10 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
                     ResponseMessage msg = response.body();
                     if (msg.getStatus() == 0) {
                         AppController.connectionEstablished = true;
-                        if(showSuccess)
+                        if(showSuccess) {
                             showToastMessage(context, context.getResources().getString(R.string.connection_ok));
+                        }
+                        findShopitemPrintList(AppController.getAppContext());
                     }
                 } else {
                     String e = response.errorBody().source().toString();
@@ -197,7 +185,7 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
     }
 
     // Inserts items that contain only the category name
-    private List<ShopitemPrintForm> processShopitemPrintList ( List<ShopitemPrintForm> shopitemList){
+    private static List<ShopitemPrintForm> processShopitemPrintList ( List<ShopitemPrintForm> shopitemList){
         List<ShopitemPrintForm> resultList = new ArrayList<ShopitemPrintForm>();
         String prevCategory = "";
         for (ShopitemPrintForm spf : shopitemList){
@@ -259,12 +247,40 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
             testConnection(this, true);
         }
         else if (id == R.id.nav_about) {
-//            showAbout ();
+            showAbout ();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            finishAndRemoveTask ();
+        }
+    }
+
+    public void showAbout (){
+        String version = null;
+        try {
+            version = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
+        }
+        catch (PackageManager.NameNotFoundException e){
+            Log.d(TAG, e.getLocalizedMessage());
+        }
+        if (version == null)
+            version = getResources().getString(R.string.version_uknown);
+
+        String text = getResources().getString(R.string.text_about);
+        text = text.replace(VERSION_PATTERN, version);
+
+//        AndroidUtils.showPopupInfo(this, text);
+        AndroidUtils.showPopup(context, AndroidUtils.Popup.INFO, getString(R.string.action_about), text, null, null);
     }
 }

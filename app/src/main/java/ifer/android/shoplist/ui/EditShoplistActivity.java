@@ -101,8 +101,8 @@ public class EditShoplistActivity extends AppCompatActivity {
                     //make a copy to be able to find if it's changed
                     prevShopitemEditList = cloneShopitemEditList(shopitemEditList, prevShopitemEditList);
 
-                    EditShoplistAdapter adapter = new EditShoplistAdapter(shopitemEditList);
-                    editShoplistView.setAdapter(adapter);
+//                    EditShoplistAdapter adapter = new EditShoplistAdapter(shopitemEditList);
+//                    editShoplistView.setAdapter(adapter);
                 }
                 else {
                     String e = response.errorBody().source().toString();
@@ -127,6 +127,8 @@ public class EditShoplistActivity extends AppCompatActivity {
             public void onResponse(Call<List<Category>> call, Response<List<Category>> response) {
                 if (response.isSuccessful()) {
                     categoryList = (List<Category>) response.body();
+                    categoryList.add(0, new Category(0, getResources().getString(R.string.label_allcategories)));
+
                     ArrayAdapter<Category> spinAdapter = new ArrayAdapter<Category>(context,  R.layout.categorylist_item, categoryList);
                     spinAdapter.setDropDownViewResource(R.layout.categorylist_item);
 //                    Log.d(MainActivity.TAG, "categories=" + categoryList);
@@ -150,12 +152,20 @@ public class EditShoplistActivity extends AppCompatActivity {
     }
 
     public void filterCategoryData(int position){
+        List<ShopitemEditForm> filteredList;
+
         int catid = categoryList.get(position).getCatid();
- Log.d (MainActivity.TAG, "catid=" + catid);
-        List<ShopitemEditForm> filteredList = new ArrayList<ShopitemEditForm>();
-        for (ShopitemEditForm sef : shopitemEditList){
-            if (sef.getCatid().equals(catid)){
-               filteredList.add(sef);
+// Log.d (MainActivity.TAG, "catid=" + catid);
+
+        if (catid == 0){
+            filteredList = shopitemEditList;
+        }
+        else {
+            filteredList = new ArrayList<ShopitemEditForm>();
+            for (ShopitemEditForm sef : shopitemEditList) {
+                if (sef.getCatid().equals(catid)) {
+                    filteredList.add(sef);
+                }
             }
         }
         EditShoplistAdapter adapter = new EditShoplistAdapter(filteredList);
