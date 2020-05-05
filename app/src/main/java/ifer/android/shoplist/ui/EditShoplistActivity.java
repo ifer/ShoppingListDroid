@@ -125,8 +125,10 @@ public class EditShoplistActivity extends AppCompatActivity {
             public void onResponse(Call<List<Category>> call, Response<List<Category>> response) {
                 if (response.isSuccessful()) {
                     categoryList = (List<Category>) response.body();
+                    ArrayAdapter<Category> spinAdapter = new ArrayAdapter<Category>(context,  R.layout.categorylist_item, categoryList);
+                    spinAdapter.setDropDownViewResource(R.layout.categorylist_item);
 //                    Log.d(MainActivity.TAG, "categories=" + categoryList);
-                    spSelectCategory.setAdapter(new ArrayAdapter<Category>(context, android.R.layout.simple_list_item_1, categoryList));
+                    spSelectCategory.setAdapter(spinAdapter);
 //                    EditShoplistAdapter adapter = new EditShoplistAdapter(shopitemEditList);
 //                    editShoplistView.setAdapter(adapter);
                 }

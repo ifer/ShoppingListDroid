@@ -14,18 +14,37 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:showIn="@layout/activity_editshoplist">
 
-    <Spinner
-        android:id="@+id/selectcategory"
-        android:layout_width="fill_parent"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1">
-    </Spinner>
+        android:layout_weight="1"
+        android:orientation="horizontal"
+        android:layout_gravity="center_vertical"
+        >
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:text="@string/label_category"
+            android:layout_gravity="center_vertical"
+            android:textSize="18sp"
+            />
+        <Spinner
+            android:id="@+id/selectcategory"
+            android:layout_width="0dp"
+            android:layout_weight="6"
+            android:layout_height="wrap_content"
+            android:spinnerMode="dropdown"
+            android:layout_gravity="center_vertical"
+            />
+    </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/editShopListView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="9"
+        android:layout_weight="15"
        />
 </LinearLayout>
 <!--</androidx.constraintlayout.widget.ConstraintLayout>-->
