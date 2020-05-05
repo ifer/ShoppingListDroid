@@ -6,9 +6,6 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -18,6 +15,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
@@ -69,19 +67,23 @@ public class EditShoplistActivity extends AppCompatActivity {
         editShoplistView.setLayoutManager(llm);
         editShoplistView.setHasFixedSize(true);
 
-//        FloatingActionButton fab = findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-//            }
-//        });
-        findCategoryList(context);
-        findShopitemEditList(context);
+        loadCategoryList(context);
+        loadShopitemEditList(context);
+
+        //spinner selection events
+        spSelectCategory.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long itemID) {
+                    filterCategoryData(position);
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
     }
 
-    private void findShopitemEditList (final Context context){
+    private void loadShopitemEditList(final Context context){
         Call<List<ShopitemEditForm>> call = AppController.apiService.getShopitemEditList();
 
         call.enqueue(new Callback<List<ShopitemEditForm>>() {
@@ -117,7 +119,7 @@ public class EditShoplistActivity extends AppCompatActivity {
 
     }
 
-    private void findCategoryList (final Context context){
+    private void loadCategoryList(final Context context){
         Call<List<Category>> call = AppController.apiService.getCategoryList();
 
         call.enqueue(new Callback<List<Category>>() {
@@ -144,6 +146,20 @@ public class EditShoplistActivity extends AppCompatActivity {
                 Log.d(MainActivity.TAG, "Connection failed. Reason: " + t.getMessage());
             }
         });
+
+    }
+
+    public void filterCategoryData(int position){
+        int catid = categoryList.get(position).getCatid();
+ Log.d (MainActivity.TAG, "catid=" + catid);
+        List<ShopitemEditForm> filteredList = new ArrayList<ShopitemEditForm>();
+        for (ShopitemEditForm sef : shopitemEditList){
+            if (sef.getCatid().equals(catid)){
+               filteredList.add(sef);
+            }
+        }
+        EditShoplistAdapter adapter = new EditShoplistAdapter(filteredList);
+        editShoplistView.setAdapter(adapter);
 
     }
 
