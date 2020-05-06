@@ -92,7 +92,8 @@ public class EditShoplistActivity extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     shopitemEditList = (List<ShopitemEditForm>) response.body();
                     Collections.sort(shopitemEditList);
-                    for (ShopitemEditForm sef : shopitemEditList){
+                    for (int i=0; i<shopitemEditList.size(); i++){
+                        ShopitemEditForm sef = shopitemEditList.get(i);
                         if (sef.getQuantity() == null){
                             sef.setQuantity("0");
                         }
@@ -101,8 +102,8 @@ public class EditShoplistActivity extends AppCompatActivity {
                     //make a copy to be able to find if it's changed
                     prevShopitemEditList = cloneShopitemEditList(shopitemEditList, prevShopitemEditList);
 
-//                    EditShoplistAdapter adapter = new EditShoplistAdapter(shopitemEditList);
-//                    editShoplistView.setAdapter(adapter);
+                    EditShoplistAdapter adapter = new EditShoplistAdapter(shopitemEditList);
+                    editShoplistView.setAdapter(adapter);
                 }
                 else {
                     String e = response.errorBody().source().toString();
@@ -127,6 +128,7 @@ public class EditShoplistActivity extends AppCompatActivity {
             public void onResponse(Call<List<Category>> call, Response<List<Category>> response) {
                 if (response.isSuccessful()) {
                     categoryList = (List<Category>) response.body();
+                    Collections.sort(categoryList);
                     categoryList.add(0, new Category(0, getResources().getString(R.string.label_allcategories)));
 
                     ArrayAdapter<Category> spinAdapter = new ArrayAdapter<Category>(context,  R.layout.categorylist_item, categoryList);
@@ -152,6 +154,10 @@ public class EditShoplistActivity extends AppCompatActivity {
     }
 
     public void filterCategoryData(int position){
+
+        if (shopitemEditList == null)
+            return;
+
         List<ShopitemEditForm> filteredList;
 
         int catid = categoryList.get(position).getCatid();
@@ -354,6 +360,9 @@ public class EditShoplistActivity extends AppCompatActivity {
         return true;
     }
 
+    public static void changeSelectedCount(){
+        setCount(getSelectedCount()) ;
+    }
 
     public static void changeShopitemStatus (int index, boolean selected, String quantity){
         shopitemEditList.get(index).setSelected(selected);

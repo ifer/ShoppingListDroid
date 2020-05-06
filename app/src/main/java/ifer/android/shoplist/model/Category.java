@@ -1,6 +1,6 @@
 package ifer.android.shoplist.model;
 
-public class Category {
+public class Category  implements Comparable<Category> {
     private Integer catid;
     private String descr;
 
@@ -34,5 +34,10 @@ public class Category {
 
     public void setDescr(String descr) {
         this.descr = descr;
+    }
+
+    @Override
+    public int compareTo(Category other) {
+        return this.getDescr().compareTo(other.getDescr());
     }
 }

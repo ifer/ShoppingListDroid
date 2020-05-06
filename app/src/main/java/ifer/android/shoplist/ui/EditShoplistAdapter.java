@@ -27,6 +27,8 @@ public class EditShoplistAdapter extends RecyclerView.Adapter<EditShoplistAdapte
     private List<ShopitemEditForm> shopitemList;
 
     private Context context;
+    private Integer layoutWidth;
+    private Integer layoutHeight;
 
     public EditShoplistAdapter(List<ShopitemEditForm> shopitemList) {
         this.shopitemList = shopitemList;
@@ -41,29 +43,29 @@ public class EditShoplistAdapter extends RecyclerView.Adapter<EditShoplistAdapte
         // inflate a new card view
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.editshoplist_item, parent, false);
 
+        EditShoplistActivity.changeSelectedCount();
 //        EditShoplistActivity.printSelected();
-
         return new ShopitemViewHolder(view, new CustomEditTextListener(), new CustomOnClickListener());
     }
 
     @Override
     public void onBindViewHolder(@NonNull final ShopitemViewHolder holder, final int position) {
-        //Must be first statements
-        holder.customEditTextListener.updatePosition(holder.getAdapterPosition());
-        holder.customOnClickListener.updateHolder(holder);
 
+        //Must be first statements
+        holder.customEditTextListener.updatePosition(position);
+        holder.customOnClickListener.updateHolder(holder);
 
         holder.tvProductName.setText(shopitemList.get(position).getProductName());
         holder.etQuantity.setText(shopitemList.get(position).getQuantity());
 
-        if (shopitemList.get(position).isSelected()){
+        if (shopitemList.get(position).isSelected()) {
             holder.etQuantity.setEnabled(true);
-        }
-        else {
+        } else {
             holder.etQuantity.setEnabled(false);
         }
         holder.etQuantity.setText(shopitemList.get(position).getQuantity());
         holder.chkSelected.setChecked(shopitemList.get(position).isSelected());
+
     }
 
     public static class ShopitemViewHolder extends RecyclerView.ViewHolder {
@@ -73,6 +75,7 @@ public class EditShoplistAdapter extends RecyclerView.Adapter<EditShoplistAdapte
         EditText etQuantity;
         CustomEditTextListener customEditTextListener;
         CustomOnClickListener customOnClickListener;
+        int realPosition;
 
 
         public ShopitemViewHolder(@NonNull View itemView,  CustomEditTextListener customEditTextListener, CustomOnClickListener customOnClickListener) {
@@ -86,7 +89,8 @@ public class EditShoplistAdapter extends RecyclerView.Adapter<EditShoplistAdapte
             this.customOnClickListener = customOnClickListener;
             this.etQuantity.addTextChangedListener(customEditTextListener);
             this.chkSelected.setOnClickListener(customOnClickListener);
-        }
+
+         }
     }
 
     @Override
@@ -106,7 +110,7 @@ public class EditShoplistAdapter extends RecyclerView.Adapter<EditShoplistAdapte
     private class CustomEditTextListener implements TextWatcher {
         private int position;
 
-        public void updatePosition(int position) {
+        public void updatePosition( int position) {
             this.position = position;
         }
 
@@ -124,7 +128,7 @@ public class EditShoplistAdapter extends RecyclerView.Adapter<EditShoplistAdapte
 //            }
 
             shopitemList.get(position).setQuantity(value);
-            EditShoplistActivity.changeShopitemQuantity(position,  charSequence.toString());
+//            EditShoplistActivity.changeShopitemQuantity(realPosition,  charSequence.toString());
 
 //EditShoplistActivity.printSelected();
         }
@@ -153,9 +157,10 @@ public class EditShoplistAdapter extends RecyclerView.Adapter<EditShoplistAdapte
                 holder.etQuantity.setEnabled(false);
                 holder.etQuantity.setText("0");
             }
-            EditShoplistActivity.changeShopitemStatus(holder.getAdapterPosition(), holder.chkSelected.isChecked(), holder.etQuantity.getText().toString());
+//            EditShoplistActivity.changeShopitemStatus(holder.realPosition, holder.chkSelected.isChecked(), holder.etQuantity.getText().toString());
             shopitemList.get(holder.getAdapterPosition()).setQuantity(holder.etQuantity.getText().toString());
             shopitemList.get(holder.getAdapterPosition()).setSelected(holder.chkSelected.isChecked());
+            EditShoplistActivity.changeSelectedCount();
 // EditShoplistActivity.printSelected();
 
         }
