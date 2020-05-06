@@ -48,7 +48,7 @@ Copyright ifer 2020\n
     <string name="label_quantity">Ποσότητα:</string>
     <string name="cart_title">Καλάθι</string>
     <string name="label_category">Κατηγορία</string>
-    <string name="label_allcategories">Όλες</string>
+    <string name="label_allcategories">Όλες οι κατηγορίες</string>
 
 
     <string name="popup_ok">ΟΚ</string>

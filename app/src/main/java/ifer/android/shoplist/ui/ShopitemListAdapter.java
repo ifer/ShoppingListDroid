@@ -3,6 +3,7 @@ package ifer.android.shoplist.ui;
 import android.content.Context;
 import android.graphics.Color;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -69,6 +70,7 @@ public class ShopitemListAdapter extends BaseAdapter {
         if (shopitemList.get(position).getProductName() == null){
             String categoryName = shopitemList.get(position).getCategoryName();
             holder.itemName.setText(categoryName);
+            holder.itemName.setTextSize(TypedValue.COMPLEX_UNIT_SP,13);
             holder.itemName.setTextColor(Color.parseColor("#0000FF"));
             holder.itemQuantity.setText("");
             holder.itemSelected.setVisibility(View.INVISIBLE);

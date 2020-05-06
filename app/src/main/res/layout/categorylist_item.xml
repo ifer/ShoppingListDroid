@@ -7,7 +7,7 @@
     android:paddingRight="10dp"
     android:paddingBottom="10dp"
 
-    android:textSize="18sp"
+    android:textSize="14sp"
     android:textColor="@color/blue"
     android:background="@color/Cornsilk"
     />

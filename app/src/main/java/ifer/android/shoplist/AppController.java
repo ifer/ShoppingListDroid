@@ -6,6 +6,8 @@ import android.content.SharedPreferences;
 import android.util.Log;
 
 
+import com.bugfender.sdk.Bugfender;
+
 import ifer.android.shoplist.api.ApiInterface;
 import ifer.android.shoplist.ui.MainActivity;
 
@@ -75,6 +77,11 @@ public class AppController extends Application {
 //
 //        appUser = settings.getString(Constants.PrefUsernameKey, "");
 //        appPassword = settings.getString(Constants.PrefPasswordKey, "");
+
+        Bugfender.init(this, "4e4ftqvnHVWRFIGxIQXBCj9KUzJSce9a", BuildConfig.DEBUG);
+        Bugfender.enableCrashReporting();
+        Bugfender.enableUIEventLogging(this);
+        Bugfender.enableLogcatLogging(); // optional, if you want logs automatically collected from logcat
 
 
     }

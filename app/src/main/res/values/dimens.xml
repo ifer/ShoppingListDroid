@@ -11,9 +11,9 @@
     <dimen name="tab_label">14sp</dimen>
     <dimen name="custom_tab_layout_height">72dp</dimen>
 
-    <dimen name="headerTextSize">20sp</dimen>
-    <dimen name="elementTextTitleSize">15sp</dimen>
-    <dimen name="elementTextValueSize">14sp</dimen>
+    <dimen name="headerTextSize">18sp</dimen>
+    <dimen name="elementTextTitleSize">13sp</dimen>
+    <dimen name="elementTextValueSize">12sp</dimen>
     <dimen name="appbar_padding_top">8dp</dimen>
 
     <dimen name="form_horizontal_margin">6dp</dimen>
