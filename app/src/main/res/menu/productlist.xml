@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" >
+    <item
+        android:id="@+id/add_product"
+        android:icon="@drawable/plus"
+        android:title="@string/action_add"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/edit_product"
+        android:icon="@drawable/edit24"
+        android:title="@string/action_edit"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/delete_product"
+        android:icon="@drawable/delete24"
+        android:title="@string/action_delete"
+        app:showAsAction="always" />
+</menu>

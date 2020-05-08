@@ -10,13 +10,18 @@
     android:baselineAligned="false"
     >
 
+
+
     <TextView
         android:id="@+id/productname"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:layout_gravity="start"
-        android:textSize="14sp" />
+        android:textSize="16sp"
+        android:textStyle="bold"
+         />
+
 
     <TextView
         android:id="@+id/category"
@@ -25,7 +30,7 @@
         android:layout_marginRight="10dp"
         android:layout_gravity="end"
         android:textSize="12sp"
-        android:color="@color/blue"
+        android:textColor="@color/blue"
         />
 
 </LinearLayout>

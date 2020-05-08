@@ -77,11 +77,11 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         if (AppController.connectionEstablished == false)
             setupConnection(getApplicationContext());
         else
-            findShopitemPrintList(this);
+            loadShopitemPrintList(this);
     }
 
 
-    private static void findShopitemPrintList (final Context context){
+    private static void loadShopitemPrintList(final Context context){
         Call<List<ShopitemPrintForm>> call = AppController.apiService.getShopitemPrintList();
 
         call.enqueue(new Callback<List<ShopitemPrintForm>>() {
@@ -168,7 +168,7 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
                         if(showSuccess) {
                             showToastMessage(context, context.getResources().getString(R.string.connection_ok));
                         }
-                        findShopitemPrintList(AppController.getAppContext());
+                        loadShopitemPrintList(AppController.getAppContext());
                     }
                 } else {
                     String e = response.errorBody().source().toString();
@@ -230,7 +230,7 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         super.onActivityResult(requestCode, resultCode, data);
         boolean runInBackgroundChanged = false;
         if (requestCode == REFRESH_REQUEST ) {
-            findShopitemPrintList(this);
+            loadShopitemPrintList(this);
         }
     }
 

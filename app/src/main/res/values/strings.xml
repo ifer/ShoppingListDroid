@@ -37,7 +37,7 @@ Copyright ifer 2020\n
 
     <string name="action_about">Περί..</string>
     <string name="action_clear">Καθάρισμα</string>
-    <string name="action_add_product">Προσθήκη προϊόντος</string>
+    <string name="action_add">Προσθήκη</string>
     <string name="action_edit">Επεξεργασία</string>
     <string name="action_save">Αποθήκευση</string>
     <string name="action_cancel">Άκυρο</string>
