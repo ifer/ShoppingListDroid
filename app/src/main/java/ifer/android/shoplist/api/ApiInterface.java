@@ -3,6 +3,7 @@ package ifer.android.shoplist.api;
 import java.util.List;
 
 import ifer.android.shoplist.model.Category;
+import ifer.android.shoplist.model.Product;
 import ifer.android.shoplist.model.Shopitem;
 import ifer.android.shoplist.model.ShopitemEditForm;
 import ifer.android.shoplist.model.ShopitemPrintForm;
@@ -35,6 +36,16 @@ public interface ApiInterface {
 
     @GET("/api/categorylist")
     Call<List<Category>> getCategoryList();
+
+    @GET("/api/productlist")
+    Call<List<Product>> getProductList();
+
+    @GET("/api/product")
+    Call<Product> getProductById(@Query("id") int prodid);
+
+    @POST("/api/updateproduct")
+    Call<ResponseMessage> addOrUpdateProduct(@Body Product product);
+
 
 //    @POST("/saveimage")
 //    Call<String> saveImage(@Body Drawing img );

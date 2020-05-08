@@ -1,21 +1,20 @@
 <resources>
     <string name="app_name">Λίστα αγορών</string>
 
-    <!-- ORIGINAL: to be removed -->
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="nav_header_title">Android Studio</string>
-    <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
-    <string name="menu_home">Home</string>
-    <string name="menu_gallery">Gallery</string>
-    <string name="menu_slideshow">Slideshow</string>
-    <string name="home_second">Home Second</string>
-    <!-- END ORIGINAL -->
+    <!-- ORIGINAL: to be removed
+      <string name="nav_header_title">Android Studio</string>
+     <string name="nav_header_subtitle">android.studio@android.com</string>
+     <string name="menu_home">Home</string>
+     <string name="menu_gallery">Gallery</string>
+     <string name="menu_slideshow">Slideshow</string>
+     <string name="home_second">Home Second</string>
+      -->
 
 
-    <string name="action_settings">Ρυθμίσεις</string>
-    <!-- Strings used for fragments for navigation -->
+    <!-- Strings used for fragments for navigation
     <string name="first_fragment_label">First Fragment</string>
     <string name="second_fragment_label">Second Fragment</string>
     <string name="next">Next</string>
@@ -23,7 +22,10 @@
 
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+-->
 
+    <string name="action_settings">Ρυθμίσεις</string>
+    <string name="action_products">Διαχείριση προϊόντων</string>
 
     <string name="app_signature">Copywrite ifer 2020</string>
     <string name="app_about">Copywrite ifer 2020</string>
@@ -37,7 +39,6 @@ Copyright ifer 2020\n
     <string name="action_clear">Καθάρισμα</string>
     <string name="action_add_product">Προσθήκη προϊόντος</string>
     <string name="action_edit">Επεξεργασία</string>
-    <string name="action_add_visit">Προσθήκη επίσκεψης</string>
     <string name="action_save">Αποθήκευση</string>
     <string name="action_cancel">Άκυρο</string>
     <string name="action_delete">Διαγραφή</string>
@@ -83,5 +84,6 @@ Copyright ifer 2020\n
     <string name="title_activity_settings">Ρυθμίσεις</string>
 
     <string name="error_qunantity_null">Η ποσότητα στο προϊόν %p δεν μπορεί να είναι μηδέν ή κενή!</string>
+    <string name="title_activity_product_list">ProductListActivity</string>
 
 </resources>

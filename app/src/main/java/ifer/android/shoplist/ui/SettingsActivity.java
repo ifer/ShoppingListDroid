@@ -33,6 +33,7 @@ public class SettingsActivity extends AppCompatActivity {
     private String initial_username;
     private String initial_password;
 
+    // When run on the emulator, localhost server address is http://10.0.2.2
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

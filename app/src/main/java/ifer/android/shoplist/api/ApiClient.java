@@ -20,6 +20,8 @@ import retrofit2.converter.scalars.ScalarsConverterFactory;
  * Created by ifer on 20/6/2017.
  */
 
+// When run on the emulator, localhost server address is http://10.0.2.2
+
 public class ApiClient {
 //    private static final String API_BASE_URL = AppController.getApiDomain();
     private static Gson gson = new GsonBuilder()

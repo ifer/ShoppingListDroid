@@ -70,14 +70,6 @@ public class AppController extends Application {
         appContext = getApplicationContext();
         settings = getSharedPreferences(SETTINGS_NAME, 0);
 
-//        if (isDevelop)
-//            devAPIdomain = settings.getString(Constants.PrefServerKey, null);
-//        else
-//            prodAPIdomain = settings.getString(Constants.PrefServerKey, null);
-//
-//        appUser = settings.getString(Constants.PrefUsernameKey, "");
-//        appPassword = settings.getString(Constants.PrefPasswordKey, "");
-
         Bugfender.init(this, "4e4ftqvnHVWRFIGxIQXBCj9KUzJSce9a", BuildConfig.DEBUG);
         Bugfender.enableCrashReporting();
         Bugfender.enableUIEventLogging(this);

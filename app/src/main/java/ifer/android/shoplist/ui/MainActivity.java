@@ -239,7 +239,11 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_settings) {
+        if (id == R.id.nav_products) {
+            Intent wc = new Intent(this, ProductListActivity.class);
+            startActivity(wc);
+        }
+        else if (id == R.id.nav_settings) {
             Intent wc = new Intent(this, SettingsActivity.class);
             startActivity(wc);
         }
