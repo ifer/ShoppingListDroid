@@ -1,6 +1,7 @@
 package ifer.android.shoplist.ui;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
@@ -14,6 +15,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import java.util.Collections;
@@ -22,6 +24,7 @@ import java.util.List;
 import ifer.android.shoplist.AppController;
 import ifer.android.shoplist.R;
 import ifer.android.shoplist.api.ProductListAdapter;
+import ifer.android.shoplist.api.ResponseMessage;
 import ifer.android.shoplist.model.Product;
 import ifer.android.shoplist.util.AndroidUtils;
 import retrofit2.Call;
@@ -33,9 +36,9 @@ import static ifer.android.shoplist.util.AndroidUtils.showToastMessage;
 
 public class ProductListActivity extends AppCompatActivity {
     private List<Product> productList;
-    private  ListView productListView;
+    private ListView productListView;
     private Context context;
-
+    private Product selectedProduct;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +52,14 @@ public class ProductListActivity extends AppCompatActivity {
         productListView = (ListView) findViewById(R.id.productListView);
         productListView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
         productListView.setSelector(new ColorDrawable(getResources().getColor(R.color.silver)));
+        productListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                selectedProduct  = (Product) parent.getItemAtPosition(position);
+                selectedProduct = productList.get(position);
+//Log.d(MainActivity.TAG, selectedProduct.getDescr()) ;
+          }
+        });
 
 
         FloatingActionButton fab = findViewById(R.id.fab);
@@ -91,6 +102,55 @@ public class ProductListActivity extends AppCompatActivity {
 
     }
 
+    private void deleteProduct(){
+        if (selectedProduct == null)
+            return;
+        String message = getString(R.string.warn_delete_product).replace("%s", selectedProduct.getDescr()) ;
+        showPopup(this, AndroidUtils.Popup.WARNING, message,  new DeletePosAction(), new DeleteNegAction());
+
+    }
+
+    class DeletePosAction implements DialogInterface.OnClickListener {
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
+            Call<ResponseMessage> call = AppController.apiService.deleteProduct(selectedProduct);
+            final Context context = AppController.getAppContext();
+
+            call.enqueue(new Callback<ResponseMessage>() {
+                @Override
+                public void onResponse(Call<ResponseMessage> call, Response<ResponseMessage> response) {
+                    if (response.isSuccessful()) {
+                        ResponseMessage msg = response.body();
+                        if (msg.getStatus() == 0) {
+                            String message = getString(R.string.delete_ok).replace("%s", selectedProduct.getDescr()) ;
+                            showToastMessage(context, message );
+                            loadProductList();
+                        }
+                        else {
+                            String e = response.errorBody().source().toString();
+                            showToastMessage(context, context.getResources().getString(R.string.error_save) + "\n" + e);
+                        }
+                    }
+                    else {
+                        String e = response.errorBody().source().toString();
+                        showToastMessage(context, context.getResources().getString(R.string.error_save) + "\n" + e);
+                    }
+                }
+                @Override
+                public void onFailure(Call<ResponseMessage> call, Throwable t) {
+                    showToastMessage(context, context.getResources().getString(R.string.error_save) + "\n" + t.toString());
+                    Log.d(MainActivity.TAG, t.toString());
+                }
+            });
+        }
+    }
+
+    class DeleteNegAction implements DialogInterface.OnClickListener {
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
+        }
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -110,6 +170,7 @@ public class ProductListActivity extends AppCompatActivity {
             case R.id.edit_product:
                 return (true);
             case R.id.delete_product:
+                deleteProduct();
                 return (true);
             case android.R.id.home:    //make toolbar home button behave like cancel, when in edit mode
                 returnToHome();

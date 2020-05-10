@@ -68,11 +68,13 @@ Copyright ifer 2020\n
     <string name="error_delete">Πρόβλημα στην διαγραφή ή στην επικοινωνία με τον server </string>
     <string name="error_empty_setting">Όλα τα πεδία πρέπει να συμπληρωθούν!</string>
     <string name="warn_not_saved">Η εγγραφή έχει μεταβληθεί. Σίγουρα θέλετε να ακυρώσετε τις αλλαγές;</string>
-    <string name="warn_delete_patient">Το προϊόν θα διαγραφεί . Σίγουρα θέλετε να συνεχίσετε;</string>
+    <string name="warn_delete_product">Το προϊόν \"%s\" θα διαγραφεί . Σίγουρα θέλετε να συνεχίσετε;</string>
     <string name="warn_credentials_needed">Δεν έχουν οριστεί στοιχεία σύνδεσης.\nΠαρακαλώ συμπληρώστε τα στην οθόνη \'Ρυθμίσεις\'\n</string>
     <string name="wrong_credentials">Η σύνδεση ήταν ανεπιτυχής.\nΠαρακαλώ ελέγξτε τα στοιχεία σύνδεσης στην οθόνη \'Ρυθμίσεις\'\n</string>
     <string name="connection_error">Η σύνδεση ήταν ανεπιτυχής. Αιτία:\n</string>
     <string name="connection_ok">Επιτυχής σύνδεση! Μπορείτε να αρχίσετε να χρησιμοποιείτε την εφαρμογή</string>
+
+    <string name="delete_ok">Το προϊόν %s διαγράφτηκε επιτυχώς</string>
 
     <string name="pref_categ_server">Σύνδεση</string>
     <string name="pref_categ_user">Στοιχεία χρήστη</string>

@@ -46,6 +46,8 @@ public interface ApiInterface {
     @POST("/api/updateproduct")
     Call<ResponseMessage> addOrUpdateProduct(@Body Product product);
 
+    @POST("/api/delproduct")
+    Call<ResponseMessage> deleteProduct(@Body Product product);
 
 //    @POST("/saveimage")
 //    Call<String> saveImage(@Body Drawing img );

@@ -231,6 +231,8 @@ public class EditShoplistActivity extends AppCompatActivity {
             }
         });
     }
+
+
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         this.optionsMenu = menu;
