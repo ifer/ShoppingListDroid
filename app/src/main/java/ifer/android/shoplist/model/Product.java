@@ -1,6 +1,8 @@
 package ifer.android.shoplist.model;
 
-public class Product implements Comparable<Product>{
+import java.io.Serializable;
+
+public class Product implements Comparable<Product>, Serializable {
     private Integer prodid;
 
     private String descr;

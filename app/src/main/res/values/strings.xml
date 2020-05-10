@@ -50,6 +50,7 @@ Copyright ifer 2020\n
     <string name="cart_title">Καλάθι</string>
     <string name="label_category">Κατηγορία</string>
     <string name="label_allcategories">Όλες οι κατηγορίες</string>
+    <string name="label_productname">Ονομασία προϊόντος</string>
 
 
     <string name="popup_ok">ΟΚ</string>
@@ -84,8 +85,17 @@ Copyright ifer 2020\n
 
     <string name="title_activity_shoplist">Καλάθι αγορών</string>
     <string name="title_activity_settings">Ρυθμίσεις</string>
+    <string name="title_activity_product">Επεξεργασία προϊόντος</string>
 
     <string name="error_qunantity_null">Η ποσότητα στο προϊόν %p δεν μπορεί να είναι μηδέν ή κενή!</string>
     <string name="title_activity_product_list">ProductListActivity</string>
+     <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
 
 </resources>

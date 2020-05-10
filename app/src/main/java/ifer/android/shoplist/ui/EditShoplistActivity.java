@@ -135,9 +135,7 @@ public class EditShoplistActivity extends AppCompatActivity {
                     spinAdapter.setDropDownViewResource(R.layout.categorylist_item);
 //                    Log.d(MainActivity.TAG, "categories=" + categoryList);
                     spSelectCategory.setAdapter(spinAdapter);
-//                    EditShoplistAdapter adapter = new EditShoplistAdapter(shopitemEditList);
-//                    editShoplistView.setAdapter(adapter);
-                }
+                 }
                 else {
                     String e = response.errorBody().source().toString();
                     showToastMessage(context, context.getResources().getString(R.string.wrong_credentials) + "\n" + e);

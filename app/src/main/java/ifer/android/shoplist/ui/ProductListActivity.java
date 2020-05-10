@@ -2,6 +2,7 @@ package ifer.android.shoplist.ui;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
@@ -102,6 +103,15 @@ public class ProductListActivity extends AppCompatActivity {
 
     }
 
+    private void addOrUpdateProduct(Product product){
+        Intent intent = new Intent(this, ProductActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(AppController.PRODUCT_KEY, product);
+        intent.putExtras(bundle);
+        this.startActivity(intent);
+
+    }
+
     private void deleteProduct(){
         if (selectedProduct == null)
             return;
@@ -168,6 +178,7 @@ public class ProductListActivity extends AppCompatActivity {
             case R.id.add_product:
                 return true;
             case R.id.edit_product:
+                addOrUpdateProduct(selectedProduct);
                 return (true);
             case R.id.delete_product:
                 deleteProduct();

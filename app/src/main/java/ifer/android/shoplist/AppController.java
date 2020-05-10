@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.util.Log;
 
 
+import com.bugfender.android.BuildConfig;
 import com.bugfender.sdk.Bugfender;
 
 import ifer.android.shoplist.api.ApiInterface;
@@ -23,6 +24,7 @@ public class AppController extends Application {
     private static Context appContext;
 
     public static final String SETTINGS_NAME = "SHOPLIST_SETTINGS";
+    public static final String PRODUCT_KEY = "product-key";
 
     /***************************
      * DEFINITIONS
