@@ -1,8 +1,9 @@
 package ifer.android.shoplist.model;
 
 import java.io.Serializable;
+import java.util.Objects;
 
-public class Product implements Comparable<Product>, Serializable {
+public class Product implements Comparable<Product>, Serializable, Cloneable {
     private Integer prodid;
 
     private String descr;
@@ -62,5 +63,25 @@ public class Product implements Comparable<Product>, Serializable {
     @Override
     public int compareTo(Product other) {
         return this.getDescr().compareTo(other.getDescr());
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Product product = (Product) o;
+        return prodid.equals(product.prodid) &&
+                descr.equals(product.descr) &&
+                catid.equals(product.catid);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(prodid, descr, catid);
+    }
+
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
     }
 }

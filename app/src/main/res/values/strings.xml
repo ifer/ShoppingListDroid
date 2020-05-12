@@ -68,6 +68,7 @@ Copyright ifer 2020\n
     <string name="error_save">Πρόβλημα στην αποθήκευση ή στην επικοινωνία με τον server </string>
     <string name="error_delete">Πρόβλημα στην διαγραφή ή στην επικοινωνία με τον server </string>
     <string name="error_empty_setting">Όλα τα πεδία πρέπει να συμπληρωθούν!</string>
+    <string name="error_empty_field">Το εξής πεδίο πρέπει να συμπληρωθεί: </string>
     <string name="warn_not_saved">Η εγγραφή έχει μεταβληθεί. Σίγουρα θέλετε να ακυρώσετε τις αλλαγές;</string>
     <string name="warn_delete_product">Το προϊόν \"%s\" θα διαγραφεί . Σίγουρα θέλετε να συνεχίσετε;</string>
     <string name="warn_credentials_needed">Δεν έχουν οριστεί στοιχεία σύνδεσης.\nΠαρακαλώ συμπληρώστε τα στην οθόνη \'Ρυθμίσεις\'\n</string>

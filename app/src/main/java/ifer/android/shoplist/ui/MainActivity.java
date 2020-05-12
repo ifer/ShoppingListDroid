@@ -40,7 +40,7 @@ import static ifer.android.shoplist.util.GenericUtils.isEmptyOrNull;
 
 public class MainActivity extends AppCompatActivity  implements NavigationView.OnNavigationItemSelectedListener {
     public static String TAG = "shoplist";
-    private static final int REFRESH_REQUEST = 101;
+//    private static final int REFRESH_REQUEST = 101;
     private final String VERSION_PATTERN = "@version@";
 
 
@@ -216,7 +216,7 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         switch (item.getItemId()) {
              case R.id.action_edit:
                 Intent intent = new Intent(MainActivity.this, EditShoplistActivity.class);
-                startActivityForResult(intent, REFRESH_REQUEST);
+                startActivityForResult(intent, AppController.REFRESH_REQUEST);
 //                this.startActivity(intent);
                 return true;
             default:
@@ -229,7 +229,7 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         boolean runInBackgroundChanged = false;
-        if (requestCode == REFRESH_REQUEST ) {
+        if (requestCode == AppController.REFRESH_REQUEST ) {
             loadShopitemPrintList(this);
         }
     }

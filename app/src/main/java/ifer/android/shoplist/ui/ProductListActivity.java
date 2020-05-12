@@ -108,8 +108,18 @@ public class ProductListActivity extends AppCompatActivity {
         Bundle bundle = new Bundle();
         bundle.putSerializable(AppController.PRODUCT_KEY, product);
         intent.putExtras(bundle);
-        this.startActivity(intent);
+        startActivityForResult(intent, AppController.REFRESH_REQUEST);
+//        this.startActivity(intent);
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        boolean runInBackgroundChanged = false;
+        if (requestCode == AppController.REFRESH_REQUEST ) {
+            loadProductList();
+        }
     }
 
     private void deleteProduct(){
@@ -176,6 +186,7 @@ public class ProductListActivity extends AppCompatActivity {
         int id = item.getItemId();
         switch (item.getItemId()) {
             case R.id.add_product:
+                addOrUpdateProduct(null);
                 return true;
             case R.id.edit_product:
                 addOrUpdateProduct(selectedProduct);
