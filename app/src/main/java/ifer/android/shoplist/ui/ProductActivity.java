@@ -173,7 +173,8 @@ public class ProductActivity extends AppCompatActivity {
     }
 
     private boolean productHasChanged(){
-        if (initialProduct.equals(product)){
+
+        if (initialProduct == null || initialProduct.equals(product)){
             return false;
         }
         else {

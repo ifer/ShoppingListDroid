@@ -2,6 +2,7 @@ package ifer.android.shoplist.ui;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
@@ -19,6 +20,9 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
@@ -28,6 +32,7 @@ import ifer.android.shoplist.AppController;
 import ifer.android.shoplist.R;
 import ifer.android.shoplist.api.ResponseMessage;
 import ifer.android.shoplist.model.Category;
+import ifer.android.shoplist.model.Product;
 import ifer.android.shoplist.model.Shopitem;
 import ifer.android.shoplist.model.ShopitemEditForm;
 import retrofit2.Call;
@@ -59,6 +64,14 @@ public class EditShoplistActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
+        FloatingActionButton fab = findViewById(R.id.fab);
+
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                addNewProduct();
+            }
+        });
 
         spSelectCategory = (Spinner)findViewById(R.id.selectcategory);
         editShoplistView = (RecyclerView) findViewById(R.id.editShopListView);
@@ -66,6 +79,7 @@ public class EditShoplistActivity extends AppCompatActivity {
         LinearLayoutManager llm = new LinearLayoutManager(this);
         editShoplistView.setLayoutManager(llm);
         editShoplistView.setHasFixedSize(true);
+
 
         loadCategoryList(context);
         loadShopitemEditList(context);
@@ -175,6 +189,25 @@ public class EditShoplistActivity extends AppCompatActivity {
         EditShoplistAdapter adapter = new EditShoplistAdapter(filteredList);
         editShoplistView.setAdapter(adapter);
 
+    }
+
+    private void addNewProduct(){
+        Intent intent = new Intent(this, ProductActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(AppController.PRODUCT_KEY, null);
+        intent.putExtras(bundle);
+        startActivityForResult(intent, AppController.REFRESH_REQUEST);
+//        this.startActivity(intent);
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        boolean runInBackgroundChanged = false;
+//        if (requestCode == AppController.REFRESH_REQUEST ) {
+            loadShopitemEditList(context);
+//        }
     }
 
     public static void printSelected(){
@@ -377,6 +410,9 @@ public class EditShoplistActivity extends AppCompatActivity {
     }
 
     public static void setCount( int cnt) {
+        if (optionsMenu == null)
+            return;
+
         String count = String.valueOf(cnt);
         MenuItem menuItem = optionsMenu.findItem(R.id.ic_cart);
         LayerDrawable icon = (LayerDrawable) menuItem.getIcon();
