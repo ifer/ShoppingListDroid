@@ -186,12 +186,19 @@ public class ProductListActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.add_product:
                 addOrUpdateProduct(null);
+                selectedProduct = null;
                 return true;
             case R.id.edit_product:
-                addOrUpdateProduct(selectedProduct);
+                if(selectedProduct != null) {
+                    addOrUpdateProduct(selectedProduct);
+                }
+                selectedProduct = null;
                 return (true);
             case R.id.delete_product:
-                deleteProduct();
+                if(selectedProduct != null) {
+                    deleteProduct();
+                }
+                selectedProduct = null;
                 return (true);
             case android.R.id.home:    //make toolbar home button behave like cancel, when in edit mode
                 returnToHome();
