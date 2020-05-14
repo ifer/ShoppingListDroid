@@ -204,10 +204,9 @@ public class EditShoplistActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        boolean runInBackgroundChanged = false;
-//        if (requestCode == AppController.REFRESH_REQUEST ) {
+        if (requestCode == AppController.REFRESH_REQUEST ) {
             loadShopitemEditList(context);
-//        }
+        }
     }
 
     public static void printSelected(){

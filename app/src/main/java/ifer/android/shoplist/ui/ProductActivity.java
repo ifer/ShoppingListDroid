@@ -223,7 +223,7 @@ public class ProductActivity extends AppCompatActivity {
                 assignViewToEntity();
                 saveProduct();
                 return true;
-            case android.R.id.home:    //make toolbar home button behave like cancel, when in edit mode
+            case android.R.id.home:    //make toolbar home button behave like cancel
                 assignViewToEntity();
                 returnToHome();
                 return (true);

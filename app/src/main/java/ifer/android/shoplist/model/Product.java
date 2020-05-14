@@ -13,7 +13,9 @@ public class Product implements Comparable<Product>, Serializable, Cloneable {
     private String categoryName;
 
     public Product() {
-
+        this.prodid = null;
+        this.descr = "";
+        this.catid = null;
     }
 
     public Product(Integer prodid, String descr, Integer catid) {
@@ -69,10 +71,20 @@ public class Product implements Comparable<Product>, Serializable, Cloneable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Product product = (Product) o;
-        return prodid.equals(product.prodid) &&
-                descr.equals(product.descr) &&
-                catid.equals(product.catid);
+        Product other = (Product) o;
+
+        if (prodid == null) {  // Case of new product
+            if (other.prodid == null && descr.equals(other.descr) && catid == null && other.prodid == null) {
+                return true;
+            }
+            else {
+                return (false);
+            }
+        }
+
+        return prodid.equals(other.prodid) &&
+                descr.equals(other.descr) &&
+                catid.equals(other.catid);
     }
 
     @Override
