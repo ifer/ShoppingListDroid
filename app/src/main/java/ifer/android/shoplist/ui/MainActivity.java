@@ -6,9 +6,14 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.CheckBox;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -21,6 +26,8 @@ import androidx.navigation.ui.AppBarConfiguration;
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
 import ifer.android.shoplist.AppController;
@@ -40,15 +47,16 @@ import static ifer.android.shoplist.util.GenericUtils.isEmptyOrNull;
 
 public class MainActivity extends AppCompatActivity  implements NavigationView.OnNavigationItemSelectedListener {
     public static String TAG = "shoplist";
-//    private static final int REFRESH_REQUEST = 101;
+    //    private static final int REFRESH_REQUEST = 101;
     private final String VERSION_PATTERN = "@version@";
-
 
 
     private AppBarConfiguration mAppBarConfiguration;
     private static ListView shopitemsListView;
     private Context context;
 
+    private static List<ShopitemPrintForm> prevShopitemList;
+    private static List<String> purchasedItems = new ArrayList<String>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,20 +89,29 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
     }
 
 
-    private static void loadShopitemPrintList(final Context context){
+    private static void loadShopitemPrintList(final Context context) {
         Call<List<ShopitemPrintForm>> call = AppController.apiService.getShopitemPrintList();
 
         call.enqueue(new Callback<List<ShopitemPrintForm>>() {
             @Override
             public void onResponse(Call<List<ShopitemPrintForm>> call, Response<List<ShopitemPrintForm>> response) {
                 if (response.isSuccessful()) {
-                    List<ShopitemPrintForm> shopitemList = (List<ShopitemPrintForm>) response.body();
-                    shopitemList = processShopitemPrintList(shopitemList);
+                    List<ShopitemPrintForm> initialShopitemList = (List<ShopitemPrintForm>) response.body();
+
+                    if (prevShopitemList != null) {
+                        boolean changed = !areIdentical(initialShopitemList, prevShopitemList);
+                        Log.d(TAG, "changed=" + changed);
+                    }
+                    //keep initial list for comparison
+                    prevShopitemList = cloneShopitemPrintList(initialShopitemList);
+
+                    //add categories
+                    List<ShopitemPrintForm> shopitemList = processShopitemPrintList(initialShopitemList);
 //                    Log.d(TAG, shopitemList.toString());
+
                     ShopitemListAdapter adapter = new ShopitemListAdapter(shopitemList);
                     shopitemsListView.setAdapter(adapter);
-                }
-                else {
+                } else {
                     String e = response.errorBody().source().toString();
                     showToastMessage(context, context.getResources().getString(R.string.wrong_credentials) + "\n" + e);
                 }
@@ -110,8 +127,7 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
     }
 
 
-
-    public static void setupConnection (Context context){
+    public static void setupConnection(Context context) {
         SharedPreferences settings = context.getSharedPreferences(Constants.SETTINGS_NAME, 0);
 
         String serverURL = settings.getString(Constants.PrefServerKey, null);
@@ -139,7 +155,7 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
             testConnection(context, false);
         else {
             showToastMessage(context, context.getString(R.string.wrong_credentials));
-         }
+        }
     }
 
 
@@ -151,7 +167,7 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         final Context context = c;
         final boolean showSuccess = showSuccessMessage;
 
-        if (AppController.apiService == null){
+        if (AppController.apiService == null) {
             showToastMessage(context, context.getString(R.string.wrong_credentials));
             return;
         }
@@ -165,7 +181,7 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
                     ResponseMessage msg = response.body();
                     if (msg.getStatus() == 0) {
                         AppController.connectionEstablished = true;
-                        if(showSuccess) {
+                        if (showSuccess) {
                             showToastMessage(context, context.getResources().getString(R.string.connection_ok));
                         }
                         loadShopitemPrintList(AppController.getAppContext());
@@ -173,7 +189,7 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
                 } else {
                     String e = response.errorBody().source().toString();
                     showToastMessage(context, context.getResources().getString(R.string.wrong_credentials) + "\n" + e);
-               }
+                }
             }
 
             @Override
@@ -185,11 +201,11 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
     }
 
     // Inserts items that contain only the category name
-    private static List<ShopitemPrintForm> processShopitemPrintList ( List<ShopitemPrintForm> shopitemList){
+    private static List<ShopitemPrintForm> processShopitemPrintList(List<ShopitemPrintForm> shopitemList) {
         List<ShopitemPrintForm> resultList = new ArrayList<ShopitemPrintForm>();
         String prevCategory = "";
-        for (ShopitemPrintForm spf : shopitemList){
-            if (!spf.getCategoryName().equals(prevCategory)){
+        for (ShopitemPrintForm spf : shopitemList) {
+            if (!spf.getCategoryName().equals(prevCategory)) {
                 ShopitemPrintForm catspf = new ShopitemPrintForm();
                 catspf.setCategoryName(spf.getCategoryName());
                 resultList.add(catspf);
@@ -214,7 +230,7 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         switch (item.getItemId()) {
-             case R.id.action_edit:
+            case R.id.action_edit:
                 Intent intent = new Intent(MainActivity.this, EditShoplistActivity.class);
                 startActivityForResult(intent, AppController.REFRESH_REQUEST);
 //                this.startActivity(intent);
@@ -229,7 +245,7 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         boolean runInBackgroundChanged = false;
-        if (requestCode == AppController.REFRESH_REQUEST ) {
+        if (requestCode == AppController.REFRESH_REQUEST) {
             loadShopitemPrintList(this);
         }
     }
@@ -242,16 +258,13 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         if (id == R.id.nav_products) {
             Intent wc = new Intent(this, ProductListActivity.class);
             startActivity(wc);
-        }
-        else if (id == R.id.nav_settings) {
+        } else if (id == R.id.nav_settings) {
             Intent wc = new Intent(this, SettingsActivity.class);
             startActivity(wc);
-        }
-        else if (id == R.id.nav_check_connection) {
+        } else if (id == R.id.nav_check_connection) {
             testConnection(this, true);
-        }
-        else if (id == R.id.nav_about) {
-            showAbout ();
+        } else if (id == R.id.nav_about) {
+            showAbout();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -266,16 +279,15 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            finishAndRemoveTask ();
+            finishAndRemoveTask();
         }
     }
 
-    public void showAbout (){
+    public void showAbout() {
         String version = null;
         try {
             version = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
-        }
-        catch (PackageManager.NameNotFoundException e){
+        } catch (PackageManager.NameNotFoundException e) {
             Log.d(TAG, e.getLocalizedMessage());
         }
         if (version == null)
@@ -287,4 +299,66 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
 //        AndroidUtils.showPopupInfo(this, text);
         AndroidUtils.showPopup(context, AndroidUtils.Popup.INFO, getString(R.string.action_about), text, null, null);
     }
+
+    private static List<ShopitemPrintForm> cloneShopitemPrintList(List<ShopitemPrintForm> fromList) {
+        List<ShopitemPrintForm> toList = new ArrayList<ShopitemPrintForm>();
+
+        Iterator<ShopitemPrintForm> iterator = fromList.iterator();
+
+        while (iterator.hasNext()) {
+            try {
+                toList.add((ShopitemPrintForm) iterator.next().clone());
+            } catch (CloneNotSupportedException e) {
+                e.printStackTrace();
+            }
+        }
+        return toList;
+    }
+
+    private static boolean areIdentical(List<ShopitemPrintForm> list1, List<ShopitemPrintForm> list2) {
+        if (list1.size() != list2.size()) {
+            return false;
+        }
+        Collections.sort(list1);
+        Collections.sort(list2);
+
+        for (int i = 0; i < list1.size(); i++) {
+            if (!list1.get(i).getProductName().equals(list2.get(i).getProductName())) {
+                return (false);
+            }
+        }
+        return true;
+    }
+
+    public static void addPurchased(String productname) {
+        purchasedItems.add(productname);
+    }
+
+    public static void removePurchased(String productname) {
+        int index = purchasedItems.indexOf(productname);
+        if (index >= 0) {
+            purchasedItems.remove(index);
+        }
+    }
+
+    public static void printPurchased(){
+        String msg = "purchasedItems=[";
+        for (String productname : purchasedItems){
+            msg += productname + ",";
+        }
+        msg+="]";
+
+        Log.d (MainActivity.TAG, msg);
+    }
+
+    public static boolean isItemPurchased(String productname){
+        if (purchasedItems.contains(productname))
+            return true;
+        else
+            return false;
+    }
+
 }
+
+
+

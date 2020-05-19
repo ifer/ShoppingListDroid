@@ -32,6 +32,8 @@ public class ShopitemListAdapter extends BaseAdapter {
 
     }
 
+
+
     @Override
     public int getCount() {
         return shopitemList.size();
@@ -50,6 +52,7 @@ public class ShopitemListAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View view, ViewGroup parent) {
+        final int index = position;
 
         final ViewHolder holder;
         if (view == null) {
@@ -60,6 +63,20 @@ public class ShopitemListAdapter extends BaseAdapter {
             holder.itemSelected = (CheckBox) view.findViewById(R.id.itemselected);
             holder.itemName = (TextView) view.findViewById(R.id.itemname);
             holder.itemQuantity = (TextView) view.findViewById(R.id.itemquantity);
+            holder.itemSelected.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    boolean isChecked = ((CheckBox)view).isChecked();
+                    if (isChecked){
+                        MainActivity.addPurchased(holder.itemName.getText().toString());
+                        MainActivity.printPurchased();
+                    }
+                    else{
+                        MainActivity.removePurchased(holder.itemName.getText().toString());
+                        MainActivity.printPurchased();
+                    }
+                }
+            });
             view.setTag(holder);
         }
         else {
@@ -81,6 +98,13 @@ public class ShopitemListAdapter extends BaseAdapter {
             holder.itemName.setText(productName);
             holder.itemName.setTextColor(Color.parseColor("#000000"));
             holder.itemQuantity.setText(quantity);
+            holder.itemSelected.setVisibility(View.VISIBLE);
+            if(MainActivity.isItemPurchased(productName)){
+                holder.itemSelected.setChecked(true);
+            }
+            else {
+                holder.itemSelected.setChecked(false);
+            }
         }
 
 //Log.d(MainActivity.TAG, "product=" + productName);
