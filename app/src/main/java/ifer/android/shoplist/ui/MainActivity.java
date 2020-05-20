@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
     private static ListView shopitemsListView;
     private Context context;
 
-    private static List<ShopitemPrintForm> prevShopitemList;
+//    private static List<ShopitemPrintForm> prevShopitemList;
     private static List<String> purchasedItems = new ArrayList<String>();
 
     @Override
@@ -98,12 +98,12 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
                 if (response.isSuccessful()) {
                     List<ShopitemPrintForm> initialShopitemList = (List<ShopitemPrintForm>) response.body();
 
-                    if (prevShopitemList != null) {
-                        boolean changed = !areIdentical(initialShopitemList, prevShopitemList);
-                        Log.d(TAG, "changed=" + changed);
-                    }
-                    //keep initial list for comparison
-                    prevShopitemList = cloneShopitemPrintList(initialShopitemList);
+//                    if (prevShopitemList != null) {
+//                        boolean changed = !areIdentical(initialShopitemList, prevShopitemList);
+//                        Log.d(TAG, "changed=" + changed);
+//                    }
+//                    //keep initial list for comparison
+//                    prevShopitemList = cloneShopitemPrintList(initialShopitemList);
 
                     //add categories
                     List<ShopitemPrintForm> shopitemList = processShopitemPrintList(initialShopitemList);

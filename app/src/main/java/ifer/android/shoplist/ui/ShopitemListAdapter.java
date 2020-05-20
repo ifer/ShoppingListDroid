@@ -69,11 +69,11 @@ public class ShopitemListAdapter extends BaseAdapter {
                     boolean isChecked = ((CheckBox)view).isChecked();
                     if (isChecked){
                         MainActivity.addPurchased(holder.itemName.getText().toString());
-                        MainActivity.printPurchased();
+//                        MainActivity.printPurchased();
                     }
                     else{
                         MainActivity.removePurchased(holder.itemName.getText().toString());
-                        MainActivity.printPurchased();
+//                        MainActivity.printPurchased();
                     }
                 }
             });
