@@ -3,6 +3,7 @@ package ifer.android.shoplist.ui;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
@@ -35,6 +36,7 @@ import ifer.android.shoplist.model.Category;
 import ifer.android.shoplist.model.Product;
 import ifer.android.shoplist.model.Shopitem;
 import ifer.android.shoplist.model.ShopitemEditForm;
+import ifer.android.shoplist.util.Constants;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -232,6 +234,8 @@ public class EditShoplistActivity extends AppCompatActivity {
             }
         }
 
+        Collections.sort(shopitemEditList, ShopitemEditForm.productByCategoryComparator);
+        saveOfflineShoplist ();
 
         Call<ResponseMessage> call = AppController.apiService.saveShopitemEditList(shopitemList);
         final Context context = AppController.getAppContext();
@@ -260,6 +264,31 @@ public class EditShoplistActivity extends AppCompatActivity {
                 Log.d(MainActivity.TAG, t.toString());
             }
         });
+    }
+
+    private static void saveOfflineShoplist (){
+        SharedPreferences settings = AppController.getAppContext().getSharedPreferences(Constants.SETTINGS_NAME, 0);
+
+        String shopListText = "";
+
+        String prevCategory = "";
+        for (ShopitemEditForm sef : shopitemEditList){
+            if (! sef.isSelected()){
+                continue;
+            }
+            if (!sef.getCategoryName().equals(prevCategory)) {
+                String categ = "[" + sef.getCategoryName() + "]";
+                shopListText += "\n" + categ + "\n";
+                prevCategory = sef.getCategoryName();
+            }
+            String line = "\t" + sef.getProductName() + "  " + sef.getQuantity() ;
+            shopListText += line + "\n";
+        }
+
+//Log.d(MainActivity.TAG, "shoplist=" + shopListText);
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putString(Constants.OfflineShoplist, shopListText);
+        editor.apply();
     }
 
 
@@ -353,6 +382,9 @@ public class EditShoplistActivity extends AppCompatActivity {
     }
 
     private boolean shopitemsChanged (){
+        if (shopitemEditList == null){
+            return false;
+        }
         if (shopitemEditList.size() != prevShopitemEditList.size()){
             return true;
         }

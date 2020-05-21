@@ -1,5 +1,6 @@
 package ifer.android.shoplist.model;
 
+import java.util.Comparator;
 import java.util.Objects;
 
 public class ShopitemEditForm implements Comparable<ShopitemEditForm>, Cloneable {
@@ -97,4 +98,15 @@ public class ShopitemEditForm implements Comparable<ShopitemEditForm>, Cloneable
     public Object clone() throws CloneNotSupportedException {
         return super.clone();
     }
+
+    public static Comparator<ShopitemEditForm> productByCategoryComparator = new Comparator<ShopitemEditForm>() {
+
+        public int compare(ShopitemEditForm sef1, ShopitemEditForm sef2) {
+
+            String categ1 = sef1.getCategoryName();
+            String categ2 = sef2.getCategoryName();
+
+            return categ1.compareTo(categ2);
+
+        }};
 }

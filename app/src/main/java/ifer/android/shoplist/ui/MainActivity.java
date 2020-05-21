@@ -13,6 +13,8 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.CheckBox;
 import android.widget.ListView;
+import android.widget.ScrollView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -24,6 +26,8 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.ui.AppBarConfiguration;
 
 import com.google.android.material.navigation.NavigationView;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -53,6 +57,8 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
 
     private AppBarConfiguration mAppBarConfiguration;
     private static ListView shopitemsListView;
+    private static TextView shopitemsText;
+    private static ScrollView textScroll;
     private Context context;
 
 //    private static List<ShopitemPrintForm> prevShopitemList;
@@ -67,6 +73,8 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         setContentView(R.layout.activity_main);
 
         shopitemsListView = (ListView) findViewById(R.id.shopitemsListView);
+        shopitemsText = (TextView)  findViewById(R.id.shopitemsText);
+        textScroll = (ScrollView)  findViewById(R.id.textScroll);
 
 
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -109,11 +117,16 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
                     List<ShopitemPrintForm> shopitemList = processShopitemPrintList(initialShopitemList);
 //                    Log.d(TAG, shopitemList.toString());
 
+                    switchToView("ONLINE");
+
                     ShopitemListAdapter adapter = new ShopitemListAdapter(shopitemList);
                     shopitemsListView.setAdapter(adapter);
                 } else {
                     String e = response.errorBody().source().toString();
                     showToastMessage(context, context.getResources().getString(R.string.wrong_credentials) + "\n" + e);
+                    switchToView("OFFLINE");
+                    showOfflineShoplist();
+
                 }
             }
 
@@ -121,6 +134,8 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
             public void onFailure(Call<List<ShopitemPrintForm>> call, Throwable t) {
                 showToastMessage(context, context.getResources().getString(R.string.wrong_credentials));
                 Log.d(TAG, "Connection failed. Reason: " + t.getMessage());
+                switchToView("OFFLINE");
+                showOfflineShoplist();
             }
         });
 
@@ -184,11 +199,15 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
                         if (showSuccess) {
                             showToastMessage(context, context.getResources().getString(R.string.connection_ok));
                         }
+
                         loadShopitemPrintList(AppController.getAppContext());
                     }
                 } else {
                     String e = response.errorBody().source().toString();
                     showToastMessage(context, context.getResources().getString(R.string.wrong_credentials) + "\n" + e);
+
+                    switchToView("OFFLINE");
+                    showOfflineShoplist();
                 }
             }
 
@@ -196,8 +215,37 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
             public void onFailure(Call<ResponseMessage> call, Throwable t) {
                 showToastMessage(context, context.getResources().getString(R.string.wrong_credentials));
                 Log.d(TAG, "Connection failed. Reason: " + t.getMessage());
+
+                switchToView("OFFLINE");
+                showOfflineShoplist();
             }
         });
+    }
+
+    private static void switchToView (String viewMode){
+        if (viewMode.equals("OFFLINE")){
+            shopitemsListView.setVisibility(View.INVISIBLE);
+            shopitemsText.setVisibility(View.VISIBLE);
+            textScroll.setVisibility(View.VISIBLE);
+        }
+        else if (viewMode.equals("ONLINE")){
+            shopitemsListView.setVisibility(View.VISIBLE);
+            shopitemsText.setVisibility(View.INVISIBLE);
+            textScroll.setVisibility(View.INVISIBLE);
+        }
+    }
+
+    private static void showOfflineShoplist (){
+        SharedPreferences settings = AppController.getAppContext().getSharedPreferences(Constants.SETTINGS_NAME, 0);
+        String offlineShoplist = settings.getString(Constants.OfflineShoplist, "");
+        offlineShoplist = AppController.getAppContext().getResources().getString(R.string.title_offlineShoplist) +  offlineShoplist ;
+        if (isEmptyOrNull(offlineShoplist)){
+            return;
+        }
+//Log.d(MainActivity.TAG, "restored shoplist=" + offlineShoplist);
+
+        shopitemsText.setText(offlineShoplist);
+
     }
 
     // Inserts items that contain only the category name
@@ -216,6 +264,7 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         return resultList;
     }
 
+//    private void
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
