@@ -39,6 +39,7 @@ public class ProductActivity extends AppCompatActivity {
     private Context context;
     private boolean newProduct = false;
     private Product initialProduct;
+    private Integer filterPosition = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,10 +50,14 @@ public class ProductActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         this.context = AppController.getAppContext();
 
-        if (savedInstanceState != null)
-            product = (Product)savedInstanceState.getSerializable(AppController.PRODUCT_KEY);
-        else
+        if (savedInstanceState != null) {
+            product = (Product) savedInstanceState.getSerializable(AppController.PRODUCT_KEY);
+            filterPosition = (Integer) savedInstanceState.getInt(AppController.FILTER_KEY);
+        }
+        else {
             product = (Product) getIntent().getExtras().getSerializable(AppController.PRODUCT_KEY);
+            filterPosition = (Integer) getIntent().getExtras().getInt(AppController.FILTER_KEY);
+        }
 
 
 
@@ -69,6 +74,9 @@ public class ProductActivity extends AppCompatActivity {
         }
         else {
             product = new Product();
+            if (filterPosition > 0){
+                spSelectCategory.setSelection(filterPosition);
+            }
             newProduct = true;
         }
 

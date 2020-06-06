@@ -53,6 +53,8 @@ public class EditShoplistActivity extends AppCompatActivity {
     private static List<ShopitemEditForm> prevShopitemEditList;
     private List<Category> categoryList;
     private static Menu optionsMenu;
+
+    private static Integer filterPosition = 0;
 //    private static boolean selectionsChanged=false;
 
     @Override
@@ -91,6 +93,7 @@ public class EditShoplistActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long itemID) {
                     filterCategoryData(position);
+                    filterPosition = position;
             }
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
@@ -117,9 +120,13 @@ public class EditShoplistActivity extends AppCompatActivity {
 
                     //make a copy to be able to find if it's changed
                     prevShopitemEditList = cloneShopitemEditList(shopitemEditList, prevShopitemEditList);
-
-                    EditShoplistAdapter adapter = new EditShoplistAdapter(shopitemEditList);
-                    editShoplistView.setAdapter(adapter);
+                    if (filterPosition > 0){
+                        filterCategoryData(filterPosition);
+                    }
+                    else {
+                        EditShoplistAdapter adapter = new EditShoplistAdapter(shopitemEditList);
+                        editShoplistView.setAdapter(adapter);
+                    }
                 }
                 else {
                     String e = response.errorBody().source().toString();
@@ -151,6 +158,7 @@ public class EditShoplistActivity extends AppCompatActivity {
                     spinAdapter.setDropDownViewResource(R.layout.categorylist_item);
 //                    Log.d(MainActivity.TAG, "categories=" + categoryList);
                     spSelectCategory.setAdapter(spinAdapter);
+
                  }
                 else {
                     String e = response.errorBody().source().toString();
@@ -197,6 +205,7 @@ public class EditShoplistActivity extends AppCompatActivity {
         Intent intent = new Intent(this, ProductActivity.class);
         Bundle bundle = new Bundle();
         bundle.putSerializable(AppController.PRODUCT_KEY, null);
+        bundle.putInt(AppController.FILTER_KEY, filterPosition);
         intent.putExtras(bundle);
         startActivityForResult(intent, AppController.REFRESH_REQUEST);
 //        this.startActivity(intent);

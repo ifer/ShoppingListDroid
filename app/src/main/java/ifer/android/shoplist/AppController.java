@@ -25,6 +25,8 @@ public class AppController extends Application {
 
     public static final String SETTINGS_NAME = "SHOPLIST_SETTINGS";
     public static final String PRODUCT_KEY = "product-key";
+    public static final String FILTER_KEY = "filter-key";
+
     public static final int REFRESH_REQUEST = 101;
 
     /***************************
