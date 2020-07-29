@@ -243,8 +243,12 @@ public class EditShoplistActivity extends AppCompatActivity {
             }
         }
 
+        // Sort by category before saving offline list
         Collections.sort(shopitemEditList, ShopitemEditForm.productByCategoryComparator);
         saveOfflineShoplist ();
+
+        // Sort by product name again
+        Collections.sort(shopitemEditList);
 
         Call<ResponseMessage> call = AppController.apiService.saveShopitemEditList(shopitemList);
         final Context context = AppController.getAppContext();
