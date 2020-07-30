@@ -43,6 +43,7 @@ Copyright ifer 2020\n
     <string name="action_cancel">Άκυρο</string>
     <string name="action_delete">Διαγραφή</string>
     <string name="action_sync">Συγχρονισμός</string>
+    <string name="action_find">Αναζήτηση</string>
     <string name="action_check_connection">Έλεγχος σύνδεσης</string>
 
     <string name="action_quantity_ok">Ποσότητα OK</string>
@@ -88,6 +89,8 @@ Copyright ifer 2020\n
     <string name="title_activity_shoplist">Καλάθι αγορών</string>
     <string name="title_activity_settings">Ρυθμίσεις</string>
     <string name="title_activity_product">Επεξεργασία προϊόντος</string>
+
+    <string name="title_find_product">Αναζήτηση προϊόντος</string>
 
     <string name="error_qunantity_null">Η ποσότητα στο προϊόν %p δεν μπορεί να είναι μηδέν ή κενή!</string>
     <string name="title_activity_product_list">ProductListActivity</string>

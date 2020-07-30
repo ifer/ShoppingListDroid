@@ -20,4 +20,11 @@
         android:title="@string/action_save">
     </item>
 
+    <item
+        android:id="@+id/action_shopitems_find"
+        android:icon="@drawable/find24"
+        app:showAsAction="always"
+        android:title="@string/action_find">
+    </item>
+
 </menu>

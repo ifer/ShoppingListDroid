@@ -8,17 +8,23 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.text.InputType;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -53,6 +59,9 @@ public class EditShoplistActivity extends AppCompatActivity {
     private static List<ShopitemEditForm> prevShopitemEditList;
     private List<Category> categoryList;
     private static Menu optionsMenu;
+    private LinearLayout selectcategoryLayout;
+
+    private boolean modeFind = false;
 
     private static Integer filterPosition = 0;
 //    private static boolean selectionsChanged=false;
@@ -76,6 +85,8 @@ public class EditShoplistActivity extends AppCompatActivity {
                 addNewProduct();
             }
         });
+
+        selectcategoryLayout = (LinearLayout) findViewById(R.id.selectcategoryLayout);
 
         spSelectCategory = (Spinner)findViewById(R.id.selectcategory);
         editShoplistView = (RecyclerView) findViewById(R.id.editShopListView);
@@ -200,6 +211,75 @@ public class EditShoplistActivity extends AppCompatActivity {
         editShoplistView.setAdapter(adapter);
 
     }
+
+
+    private void findProductsByName(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(context.getResources().getString(R.string.title_find_product));
+        final EditText input = new EditText(this);
+
+// Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
+        input.setInputType(InputType.TYPE_CLASS_TEXT);
+        builder.setView(input);
+
+// Set up the buttons
+        String okText = context.getResources().getString(R.string.popup_ok);
+        builder.setPositiveButton(okText, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                String filterText = input.getText().toString();
+                filterProductsByName(filterText);
+
+                MenuItem menuItem = optionsMenu.findItem(R.id.action_shopitems_find);
+                menuItem.setIcon(ContextCompat.getDrawable(EditShoplistActivity.this, R.drawable.find_off24));
+                selectcategoryLayout.setVisibility(View.GONE);
+                modeFind = true;
+            }
+        });
+
+        String cancelText = context.getResources().getString(R.string.popup_cancel);
+        builder.setNegativeButton(cancelText, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+                modeFind = false;
+            }
+        });
+
+        builder.show();
+
+     }
+
+    private void filterProductsByName (String filterText){
+
+        if (shopitemEditList == null)
+            return;
+
+        List<ShopitemEditForm> filteredList;
+
+// Log.d (MainActivity.TAG, "catid=" + catid);
+
+
+        filteredList = new ArrayList<ShopitemEditForm>();
+        for (ShopitemEditForm sef : shopitemEditList) {
+            if (sef.getProductName().toLowerCase().contains(filterText.toLowerCase())) {
+                filteredList.add(sef);
+            }
+        }
+
+        EditShoplistAdapter adapter = new EditShoplistAdapter(filteredList);
+        editShoplistView.setAdapter(adapter);
+
+    }
+
+    private void clearFilterByName(){
+        MenuItem menuItem = optionsMenu.findItem(R.id.action_shopitems_find);
+        menuItem.setIcon(ContextCompat.getDrawable(EditShoplistActivity.this, R.drawable.find24));
+        selectcategoryLayout.setVisibility(View.VISIBLE);
+        filterCategoryData(0);
+        modeFind = false;
+    }
+
 
     private void addNewProduct(){
         Intent intent = new Intent(this, ProductActivity.class);
@@ -333,6 +413,15 @@ public class EditShoplistActivity extends AppCompatActivity {
                 return (true);
             case R.id.action_shopitems_clear:
                 removeAllSelections();
+                return (true);
+            case R.id.action_shopitems_find:
+                if (modeFind == false) {
+                    findProductsByName();
+                }
+                else {
+                    clearFilterByName();
+                }
+
                 return (true);
             default:
                 return super.onOptionsItemSelected(item);
