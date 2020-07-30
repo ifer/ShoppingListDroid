@@ -42,6 +42,7 @@ Copyright ifer 2020\n
     <string name="action_save">Αποθήκευση</string>
     <string name="action_cancel">Άκυρο</string>
     <string name="action_delete">Διαγραφή</string>
+    <string name="action_sync">Συγχρονισμός</string>
     <string name="action_check_connection">Έλεγχος σύνδεσης</string>
 
     <string name="action_quantity_ok">Ποσότητα OK</string>

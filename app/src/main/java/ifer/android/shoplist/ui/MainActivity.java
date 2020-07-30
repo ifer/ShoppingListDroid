@@ -284,6 +284,9 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
                 startActivityForResult(intent, AppController.REFRESH_REQUEST);
 //                this.startActivity(intent);
                 return true;
+            case R.id.action_sync:
+                 loadShopitemPrintList(AppController.getAppContext());
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }

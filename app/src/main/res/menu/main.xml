@@ -11,4 +11,9 @@
         android:icon="@drawable/cart24"
         android:title="@string/action_edit"
         app:showAsAction="always"></item>
+    <item
+        android:id="@+id/action_sync"
+        android:icon="@drawable/sync24"
+        android:title="@string/action_sync"
+        app:showAsAction="always"></item>
 </menu>
