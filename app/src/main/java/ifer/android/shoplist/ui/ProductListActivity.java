@@ -75,6 +75,10 @@ public class ProductListActivity extends AppCompatActivity {
         loadProductList();
     }
 
+    public void setSelectedProduct(Product selectedProduct) {
+        this.selectedProduct = selectedProduct;
+    }
+
     private void loadProductList (){
         Call<List<Product>> call = AppController.apiService.getProductList();
 
@@ -118,6 +122,7 @@ public class ProductListActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == AppController.REFRESH_REQUEST ) {
             loadProductList();
+            setSelectedProduct(null);
         }
     }
 
@@ -132,6 +137,7 @@ public class ProductListActivity extends AppCompatActivity {
     class DeletePosAction implements DialogInterface.OnClickListener {
         @Override
         public void onClick(DialogInterface dialog, int which) {
+
             Call<ResponseMessage> call = AppController.apiService.deleteProduct(selectedProduct);
             final Context context = AppController.getAppContext();
 
@@ -144,22 +150,27 @@ public class ProductListActivity extends AppCompatActivity {
                             String message = getString(R.string.delete_ok).replace("%s", selectedProduct.getDescr()) ;
                             showToastMessage(context, message );
                             loadProductList();
+                            setSelectedProduct(null);
                         }
                         else {
                             String e = response.errorBody().source().toString();
                             showToastMessage(context, context.getResources().getString(R.string.error_save) + "\n" + e);
+                            setSelectedProduct(null);
                         }
                     }
                     else {
                         String e = response.errorBody().source().toString();
                         showToastMessage(context, context.getResources().getString(R.string.error_save) + "\n" + e);
+                        setSelectedProduct(null);
                     }
                 }
                 @Override
                 public void onFailure(Call<ResponseMessage> call, Throwable t) {
                     showToastMessage(context, context.getResources().getString(R.string.error_save) + "\n" + t.toString());
                     Log.d(MainActivity.TAG, t.toString());
+                    setSelectedProduct(null);
                 }
+
             });
         }
     }
@@ -186,19 +197,19 @@ public class ProductListActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.add_product:
                 addOrUpdateProduct(null);
-                selectedProduct = null;
+//                selectedProduct = null;
                 return true;
             case R.id.edit_product:
                 if(selectedProduct != null) {
                     addOrUpdateProduct(selectedProduct);
                 }
-                selectedProduct = null;
+//                selectedProduct = null;
                 return (true);
             case R.id.delete_product:
                 if(selectedProduct != null) {
                     deleteProduct();
                 }
-                selectedProduct = null;
+//                selectedProduct = null;
                 return (true);
             case android.R.id.home:    //make toolbar home button behave like cancel, when in edit mode
                 returnToHome();
