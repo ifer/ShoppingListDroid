@@ -114,6 +114,9 @@ public class EditShoplistActivity extends AppCompatActivity {
     }
 
     private void loadShopitemEditList(final Context context){
+        if (AppController.apiService == null) // No connection to server
+            return;
+
         Call<List<ShopitemEditForm>> call = AppController.apiService.getShopitemEditList();
 
         call.enqueue(new Callback<List<ShopitemEditForm>>() {
@@ -155,6 +158,9 @@ public class EditShoplistActivity extends AppCompatActivity {
     }
 
     private void loadCategoryList(final Context context){
+        if (AppController.apiService == null){
+            return;
+        }
         Call<List<Category>> call = AppController.apiService.getCategoryList();
 
         call.enqueue(new Callback<List<Category>>() {

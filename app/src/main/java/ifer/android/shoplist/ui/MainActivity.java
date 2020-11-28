@@ -98,6 +98,10 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
 
 
     private static void loadShopitemPrintList(final Context context) {
+        if (AppController.apiService == null){ // No connection to server
+            return;
+        }
+
         Call<List<ShopitemPrintForm>> call = AppController.apiService.getShopitemPrintList();
 
         call.enqueue(new Callback<List<ShopitemPrintForm>>() {

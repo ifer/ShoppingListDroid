@@ -75,10 +75,10 @@ public class AppController extends Application {
         appContext = getApplicationContext();
         settings = getSharedPreferences(SETTINGS_NAME, 0);
 
-        Bugfender.init(this, "4e4ftqvnHVWRFIGxIQXBCj9KUzJSce9a", BuildConfig.DEBUG);
-        Bugfender.enableCrashReporting();
-        Bugfender.enableUIEventLogging(this);
-        Bugfender.enableLogcatLogging(); // optional, if you want logs automatically collected from logcat
+//        Bugfender.init(this, "4e4ftqvnHVWRFIGxIQXBCj9KUzJSce9a", BuildConfig.DEBUG);
+//        Bugfender.enableCrashReporting();
+//        Bugfender.enableUIEventLogging(this);
+//        Bugfender.enableLogcatLogging(); // optional, if you want logs automatically collected from logcat
 
 
     }
