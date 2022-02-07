@@ -34,6 +34,7 @@
         <activity
             android:name=".ui.EditShoplistActivity"
             android:label="@string/title_activity_shoplist"
+            android:windowSoftInputMode="adjustPan"
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".ui.SettingsActivity"

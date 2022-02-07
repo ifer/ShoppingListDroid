@@ -1,6 +1,7 @@
 package ifer.android.shoplist.ui;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -66,6 +67,23 @@ public class EditShoplistAdapter extends RecyclerView.Adapter<EditShoplistAdapte
         holder.etQuantity.setText(shopitemList.get(position).getQuantity());
         holder.chkSelected.setChecked(shopitemList.get(position).isSelected());
 
+        // Increase bottom margin when at last list item, so that floating button does not overlap the item
+        if (position + 1 == getItemCount()) {
+            // set bottom margin to 80dp.
+            setBottomMargin(holder.itemView, (int) (80 * Resources.getSystem().getDisplayMetrics().density));
+        } else {
+            // reset bottom margin back to zero. (your value may be different)
+            setBottomMargin(holder.itemView, 0);
+        }
+
+    }
+
+    public static void setBottomMargin(View view, int bottomMargin) {
+        if (view.getLayoutParams() instanceof ViewGroup.MarginLayoutParams) {
+            ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) view.getLayoutParams();
+            params.setMargins(params.leftMargin, params.topMargin, params.rightMargin, bottomMargin);
+            view.requestLayout();
+        }
     }
 
     public static class ShopitemViewHolder extends RecyclerView.ViewHolder {
