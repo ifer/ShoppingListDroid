@@ -1,5 +1,6 @@
 package ifer.android.shoplist.api;
 
+import android.content.Context;
 import android.text.TextUtils;
 
 import com.google.gson.Gson;
@@ -56,21 +57,21 @@ public class ApiClient {
         httpClient = new OkHttpClient.Builder();
     }
 
-    public static <S> S createService(Class<S> serviceClass, String username, String password) throws Exception {
+    public static <S> S createService(Class<S> serviceClass, Context context, String username, String password) throws Exception {
 
         setupRetrofit();
 
         if (!TextUtils.isEmpty(username)  && !TextUtils.isEmpty(password)) {
             String authToken = Credentials.basic(username, password);
-            return createService(serviceClass, authToken);
+            return createService(serviceClass, context);
         }
 
         return(null);
     }
 
-    public static <S> S createService(Class<S> serviceClass, final String authToken) {
-        if (!TextUtils.isEmpty(authToken)) {
-            AuthenticationInterceptor interceptor =  new AuthenticationInterceptor(authToken);
+    public static <S> S createService(Class<S> serviceClass, Context context) {
+//        if (!TextUtils.isEmpty(authToken)) {
+            AuthenticationInterceptor interceptor =  new AuthenticationInterceptor(context);
 
             if (!httpClient.interceptors().contains(interceptor)) {
                 httpClient.addInterceptor(interceptor);
@@ -78,7 +79,7 @@ public class ApiClient {
                 builder.client(httpClient.build());
                 retrofit = builder.build();
             }
-        }
+//        }
 
         return retrofit.create(serviceClass);
     }

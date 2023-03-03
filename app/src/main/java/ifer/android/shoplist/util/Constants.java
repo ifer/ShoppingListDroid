@@ -6,4 +6,5 @@ public class Constants {
     public static String PrefPasswordKey = "pref_password_key";
     public static String OfflineShoplist = "offline_shoplist_key";
     public static final String SETTINGS_NAME = "SHOPLIST_SETTINGS";
+    public static final String TOKEN_STORAGE = "TOKEN_STORAGE";
 }

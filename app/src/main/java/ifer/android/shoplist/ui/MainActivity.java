@@ -39,6 +39,7 @@ import ifer.android.shoplist.R;
 import ifer.android.shoplist.api.ApiClient;
 import ifer.android.shoplist.api.ApiInterface;
 import ifer.android.shoplist.api.ResponseMessage;
+import ifer.android.shoplist.api.SessionManager;
 import ifer.android.shoplist.model.LoginRequest;
 import ifer.android.shoplist.model.LoginResponse;
 import ifer.android.shoplist.model.ShopitemPrintForm;
@@ -166,7 +167,8 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         }
 
         try {
-            AppController.apiService = ApiClient.createService(ApiInterface.class, AppController.appUser, AppController.appPassword);
+            AppController.apiService = ApiClient.createService(ApiInterface.class, context, AppController.appUser, AppController.appPassword);
+//            AppController.apiService = ApiClient.createService(ApiInterface.class, context);
         } catch (Exception e) {
             e.printStackTrace();
             showToastMessage(context, context.getString(R.string.connection_error) + " " + e.getLocalizedMessage());
@@ -192,6 +194,8 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
             return;
         }
 
+        final SessionManager sessionManager = new SessionManager(context);
+
         LoginRequest logrec = new LoginRequest(AppController.appUser, AppController.appPassword);
         Call<LoginResponse> call = AppController.apiService.login( logrec);
 
@@ -202,6 +206,7 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
                     LoginResponse msg = response.body();
                     if (msg.getStatus() == 200) {
                         AppController.connectionEstablished = true;
+                        sessionManager.saveAuthToken(msg.getToken());
                         if (showSuccess) {
                             showToastMessage(context, context.getResources().getString(R.string.connection_ok));
                         }
