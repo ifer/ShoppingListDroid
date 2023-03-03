@@ -3,6 +3,8 @@ package ifer.android.shoplist.api;
 import java.util.List;
 
 import ifer.android.shoplist.model.Category;
+import ifer.android.shoplist.model.LoginRequest;
+import ifer.android.shoplist.model.LoginResponse;
 import ifer.android.shoplist.model.Product;
 import ifer.android.shoplist.model.Shopitem;
 import ifer.android.shoplist.model.ShopitemEditForm;
@@ -18,6 +20,8 @@ import retrofit2.http.Query;
  */
 
 public interface ApiInterface {
+    @POST("/login")
+    Call<LoginResponse> login (@Body LoginRequest loginrequest);
 
     @GET("/api/shopitemprintlist")
     Call<List<ShopitemPrintForm>> getShopitemPrintList();

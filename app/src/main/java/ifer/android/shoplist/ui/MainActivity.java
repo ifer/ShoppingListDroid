@@ -39,6 +39,8 @@ import ifer.android.shoplist.R;
 import ifer.android.shoplist.api.ApiClient;
 import ifer.android.shoplist.api.ApiInterface;
 import ifer.android.shoplist.api.ResponseMessage;
+import ifer.android.shoplist.model.LoginRequest;
+import ifer.android.shoplist.model.LoginResponse;
 import ifer.android.shoplist.model.ShopitemPrintForm;
 import ifer.android.shoplist.util.AndroidUtils;
 import ifer.android.shoplist.util.Constants;
@@ -171,12 +173,60 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
             return;
         }
         if (AppController.apiService != null)
-            testConnection(context, false);
+            login(context, false);
+//            testConnection(context, false);
+//            testConnection(context, false);
         else {
             showToastMessage(context, context.getString(R.string.wrong_credentials));
         }
     }
 
+
+    public static void login(Context c, boolean showSuccessMessage) {
+
+        final Context context = c;
+        final boolean showSuccess = showSuccessMessage;
+
+        if (AppController.apiService == null) {
+            showToastMessage(context, context.getString(R.string.wrong_credentials));
+            return;
+        }
+
+        LoginRequest logrec = new LoginRequest(AppController.appUser, AppController.appPassword);
+        Call<LoginResponse> call = AppController.apiService.login( logrec);
+
+        call.enqueue(new Callback<LoginResponse>() {
+            @Override
+            public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
+                if (response.isSuccessful()) {
+                    LoginResponse msg = response.body();
+                    if (msg.getStatus() == 200) {
+                        AppController.connectionEstablished = true;
+                        if (showSuccess) {
+                            showToastMessage(context, context.getResources().getString(R.string.connection_ok));
+                        }
+
+                        loadShopitemPrintList(AppController.getAppContext());
+                    }
+                } else {
+                    String e = response.errorBody().source().toString();
+                    showToastMessage(context, context.getResources().getString(R.string.wrong_credentials) + "\n" + e);
+
+                    switchToView("OFFLINE");
+                    showOfflineShoplist();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<LoginResponse> call, Throwable t) {
+                showToastMessage(context, context.getResources().getString(R.string.wrong_credentials));
+                Log.d(TAG, "Connection failed. Reason: " + t.getMessage());
+
+                switchToView("OFFLINE");
+                showOfflineShoplist();
+            }
+        });
+    }
 
     /**
      * Test connection with the specified credentials
