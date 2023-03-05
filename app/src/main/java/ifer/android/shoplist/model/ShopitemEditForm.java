@@ -1,11 +1,13 @@
 package ifer.android.shoplist.model;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.Comparator;
 import java.util.Objects;
 
 public class ShopitemEditForm implements Comparable<ShopitemEditForm>, Cloneable {
     private Integer prodid;
-    private String productName;
+    private String productΝame;
     private Integer catid;
     private String categoryName;
     private String quantity;
@@ -16,19 +18,20 @@ public class ShopitemEditForm implements Comparable<ShopitemEditForm>, Cloneable
 
     public ShopitemEditForm(Integer prodid, String productName, Integer catid, String categoryName, String quantity, boolean selected) {
         this.prodid = prodid;
-        this.productName = productName;
+        this.productΝame = productName;
         this.catid = catid;
         this.categoryName = categoryName;
         this.quantity = quantity;
         this.selected = selected;
     }
 
-    public String getProductName() {
-        return productName;
+
+    public String getProductΝame() {
+        return productΝame;
     }
 
-    public void setProductName(String productName) {
-        this.productName = productName;
+    public void setProductΝame(String productΝame) {
+        this.productΝame = productΝame;
     }
 
     public String getCategoryName() {
@@ -74,9 +77,9 @@ public class ShopitemEditForm implements Comparable<ShopitemEditForm>, Cloneable
     @Override
     public int compareTo(ShopitemEditForm shopitemEditForm) {
         //int compareQuantity = ((Fruit) compareFruit).getQuantity();
-        String compareProduct = shopitemEditForm.getProductName();
+        String compareProduct = shopitemEditForm.getProductΝame();
 
-        return this.getProductName().compareTo(compareProduct);
+        return this.getProductΝame().compareTo(compareProduct);
 
     }
 

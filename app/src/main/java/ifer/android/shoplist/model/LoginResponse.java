@@ -2,6 +2,7 @@ package ifer.android.shoplist.model;
 
 public class LoginResponse {
     private String token;
+    private String refresh;
     private String username;
     private String roles;
     private Integer status;
@@ -12,6 +13,14 @@ public class LoginResponse {
 
     public void setToken(String token) {
         this.token = token;
+    }
+
+    public String getRefresh() {
+        return refresh;
+    }
+
+    public void setRefresh(String refresh) {
+        this.refresh = refresh;
     }
 
     public String getUsername() {

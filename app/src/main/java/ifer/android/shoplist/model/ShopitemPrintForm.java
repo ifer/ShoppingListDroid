@@ -1,19 +1,19 @@
 package ifer.android.shoplist.model;
 
 public class ShopitemPrintForm implements Comparable<ShopitemPrintForm>, Cloneable {
-    private String productName;
+    private String productΝame;
     private String categoryName;
     private String quantity;
 
     public ShopitemPrintForm() {
     }
 
-    public String getProductName() {
-        return productName;
+    public String getProductΝame() {
+        return productΝame;
     }
 
-    public void setProductName(String productName) {
-        this.productName = productName;
+    public void setProductΝame(String productΝame) {
+        this.productΝame = productΝame;
     }
 
     public String getCategoryName() {
@@ -34,7 +34,7 @@ public class ShopitemPrintForm implements Comparable<ShopitemPrintForm>, Cloneab
 
     @Override
     public int compareTo(ShopitemPrintForm other) {
-        return this.getProductName().compareTo(other.getProductName());
+        return this.getProductΝame().compareTo(other.getProductΝame());
     }
 
     @Override

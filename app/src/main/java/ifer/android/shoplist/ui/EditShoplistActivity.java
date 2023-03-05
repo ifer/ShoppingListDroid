@@ -268,7 +268,7 @@ public class EditShoplistActivity extends AppCompatActivity {
 
         filteredList = new ArrayList<ShopitemEditForm>();
         for (ShopitemEditForm sef : shopitemEditList) {
-            if (sef.getProductName().toLowerCase().contains(filterText.toLowerCase())) {
+            if (sef.getProductΝame().toLowerCase().contains(filterText.toLowerCase())) {
                 filteredList.add(sef);
             }
         }
@@ -310,7 +310,7 @@ public class EditShoplistActivity extends AppCompatActivity {
         Log.d(MainActivity.TAG, "SELECTED:");
         for (ShopitemEditForm sef : shopitemEditList){
             if (sef.isSelected()){
-                Log.d(MainActivity.TAG, sef.getProductName() + " " + sef.getQuantity());
+                Log.d(MainActivity.TAG, sef.getProductΝame() + " " + sef.getQuantity());
             }
         }
 
@@ -380,7 +380,7 @@ public class EditShoplistActivity extends AppCompatActivity {
                 shopListText += "\n" + categ + "\n";
                 prevCategory = sef.getCategoryName();
             }
-            String line = "\t" + sef.getProductName() + "  " + sef.getQuantity() ;
+            String line = "\t" + sef.getProductΝame() + "  " + sef.getQuantity() ;
             shopListText += line + "\n";
         }
 
@@ -524,7 +524,7 @@ public class EditShoplistActivity extends AppCompatActivity {
 
             if (shopitemEditList.get(i).isSelected() &&
                     (isEmptyOrNull(shopitemEditList.get(i).getQuantity()) || shopitemEditList.get(i).getQuantity().trim().equals("0"))){
-                String msg =  AppController.getAppContext().getResources().getString(R.string.error_qunantity_null).replace("%p", shopitemEditList.get(i).getProductName());
+                String msg =  AppController.getAppContext().getResources().getString(R.string.error_qunantity_null).replace("%p", shopitemEditList.get(i).getProductΝame());
                 showToastMessage(AppController.getAppContext(), msg);
                 return false;
             }

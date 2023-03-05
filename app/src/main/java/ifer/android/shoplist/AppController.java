@@ -3,14 +3,9 @@ package ifer.android.shoplist;
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.util.Log;
 
-
-import com.bugfender.android.BuildConfig;
-import com.bugfender.sdk.Bugfender;
 
 import ifer.android.shoplist.api.ApiInterface;
-import ifer.android.shoplist.ui.MainActivity;
 
 
 /**
@@ -41,7 +36,7 @@ public class AppController extends Application {
     //must uncomment values on strings.xml
     private static String prodAPIdomain = "http://";
 //    private static String devAPIdomain = "http://192.168.1.11:8083";
-    private static String devAPIdomain = "http://10.0.2.2:8090";      //Localhost (ergo) ip for the emulator
+    private static String devAPIdomain = "https://10.0.2.2:8451";      //Localhost (ergo) ip for the emulator
 //    private static String devAPIdomain = "http://192.168.1.2:3000";      //Localhost (ergo) for devices
 //    private static  String devAPIdomain = "http://192.168.1.90:8083";
 
@@ -52,6 +47,7 @@ public class AppController extends Application {
     public static ApiInterface apiService;
     public static String appUser;
     public static String appPassword;
+
 
     public static boolean connectionEstablished = false;
 
@@ -100,7 +96,6 @@ public class AppController extends Application {
     public static SharedPreferences getSettings() {
         return settings;
     }
-
 
 
 }

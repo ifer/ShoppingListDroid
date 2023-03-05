@@ -56,7 +56,7 @@ public class EditShoplistAdapter extends RecyclerView.Adapter<EditShoplistAdapte
         holder.customEditTextListener.updatePosition(position);
         holder.customOnClickListener.updateHolder(holder);
 
-        holder.tvProductName.setText(shopitemList.get(position).getProductName());
+        holder.tvProductName.setText(shopitemList.get(position).getProductΝame());
         holder.etQuantity.setText(shopitemList.get(position).getQuantity());
 
         if (shopitemList.get(position).isSelected()) {

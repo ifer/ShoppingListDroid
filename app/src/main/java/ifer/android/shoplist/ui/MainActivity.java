@@ -6,16 +6,12 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -26,8 +22,6 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.ui.AppBarConfiguration;
 
 import com.google.android.material.navigation.NavigationView;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -174,10 +168,10 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
             showToastMessage(context, context.getString(R.string.connection_error) + " " + e.getLocalizedMessage());
             return;
         }
-        if (AppController.apiService != null)
+        if (AppController.apiService != null){
+
             login(context, false);
-//            testConnection(context, false);
-//            testConnection(context, false);
+        }
         else {
             showToastMessage(context, context.getString(R.string.wrong_credentials));
         }
@@ -203,16 +197,22 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
             @Override
             public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
                 if (response.isSuccessful()) {
-                    LoginResponse msg = response.body();
-                    if (msg.getStatus() == 200) {
+                    LoginResponse logresp = response.body();
+                    if (logresp.getStatus() == 200) {
                         AppController.connectionEstablished = true;
-                        sessionManager.saveAuthToken(msg.getToken());
+                        sessionManager.saveAuthToken(logresp.getToken());
+                        sessionManager.saveRefreshToken(logresp.getRefresh());
                         if (showSuccess) {
                             showToastMessage(context, context.getResources().getString(R.string.connection_ok));
                         }
 
                         loadShopitemPrintList(AppController.getAppContext());
                     }
+                    else if (logresp.getStatus() == 401) {
+                        showToastMessage(context, context.getResources().getString(R.string.wrong_credentials) );
+//                        refreshToken(context);
+                    }
+
                 } else {
                     String e = response.errorBody().source().toString();
                     showToastMessage(context, context.getResources().getString(R.string.wrong_credentials) + "\n" + e);
@@ -232,6 +232,8 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
             }
         });
     }
+
+
 
     /**
      * Test connection with the specified credentials
@@ -434,7 +436,7 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         Collections.sort(list2);
 
         for (int i = 0; i < list1.size(); i++) {
-            if (!list1.get(i).getProductName().equals(list2.get(i).getProductName())) {
+            if (!list1.get(i).getProductΝame().equals(list2.get(i).getProductΝame())) {
                 return (false);
             }
         }

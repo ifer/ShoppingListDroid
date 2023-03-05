@@ -8,6 +8,8 @@ import com.google.gson.GsonBuilder;
 
 import java.io.IOException;
 
+import javax.net.ssl.SSLContext;
+
 import ifer.android.shoplist.AppController;
 import okhttp3.Credentials;
 import okhttp3.OkHttpClient;
@@ -33,17 +35,9 @@ public class ApiClient {
     public static Retrofit retrofit;
     private static OkHttpClient.Builder httpClient;
 
-//    public static <S> S createNoAuthService(Class<S> serviceClass) {
-//        Retrofit retrofit = builder.build();
-//        return (retrofit.create(serviceClass));
-//    }
 
 
-    public static <S> S createService(Class<S> serviceClass) {
-        return createService(serviceClass);
-    }
-
-    private static void setupRetrofit () throws Exception {
+    private static void setupRetrofit (Context context) throws Exception {
         try {
             builder = new Retrofit.Builder()
                     .baseUrl(AppController.getApiDomain())
@@ -54,12 +48,13 @@ public class ApiClient {
             throw e;
         }
         retrofit = builder.build();
+
         httpClient = new OkHttpClient.Builder();
     }
 
     public static <S> S createService(Class<S> serviceClass, Context context, String username, String password) throws Exception {
 
-        setupRetrofit();
+        setupRetrofit(context);
 
         if (!TextUtils.isEmpty(username)  && !TextUtils.isEmpty(password)) {
             String authToken = Credentials.basic(username, password);

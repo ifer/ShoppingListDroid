@@ -84,7 +84,7 @@ public class ShopitemListAdapter extends BaseAdapter {
             holder = (ViewHolder)view.getTag();
         }
 
-        if (shopitemList.get(position).getProductName() == null){
+        if (shopitemList.get(position).getProductΝame() == null){
             String categoryName = shopitemList.get(position).getCategoryName();
             holder.itemName.setText(categoryName);
             holder.itemName.setTextSize(TypedValue.COMPLEX_UNIT_SP,13);
@@ -93,7 +93,7 @@ public class ShopitemListAdapter extends BaseAdapter {
             holder.itemSelected.setVisibility(View.INVISIBLE);
         }
         else {
-            String productName = shopitemList.get(position).getProductName();
+            String productName = shopitemList.get(position).getProductΝame();
             String quantity = shopitemList.get(position).getQuantity();
             holder.itemName.setText(productName);
             holder.itemName.setTextColor(Color.parseColor("#000000"));

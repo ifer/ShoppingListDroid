@@ -4,6 +4,7 @@ import android.content.Context;
 
 import java.io.IOException;
 
+import ifer.android.shoplist.AppController;
 import okhttp3.Interceptor;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -14,7 +15,7 @@ import okhttp3.Response;
 
 public class AuthenticationInterceptor implements Interceptor {
 
-//    private String authToken;
+    //    private String authToken;
     private Context context;
 
     public AuthenticationInterceptor(Context context) {
@@ -32,6 +33,7 @@ public class AuthenticationInterceptor implements Interceptor {
                 .header("Authorization", "Bearer " + authToken);
 
         Request request = builder.build();
+
         return chain.proceed(request);
     }
 }
