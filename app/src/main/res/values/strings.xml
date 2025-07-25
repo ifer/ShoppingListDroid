@@ -27,11 +27,11 @@
     <string name="action_settings">Ρυθμίσεις</string>
     <string name="action_products">Διαχείριση προϊόντων</string>
 
-    <string name="app_signature">Copywrite ifer 2020</string>
-    <string name="app_about">Copywrite ifer 2020</string>
+    <string name="app_signature">Copywrite ifer 2020-2025</string>
+    <string name="app_about">Copywrite ifer 2020-2025</string>
     <string name="text_about">\nΛίστα αγορών\n\n
 έκδοση @version@\n\n
-Copyright ifer 2020\n
+Copyright ifer 2020-2025\n
 </string>
     <string name="version_uknown">[Άγνωστη]</string>
 
